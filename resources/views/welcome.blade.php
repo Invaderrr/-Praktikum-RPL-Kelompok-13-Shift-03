@@ -161,9 +161,8 @@
         </form>
 
         <div class="footer-text">
-            Tidak Punya Akun? <span>Daftar</span>
-        </div>
-
+    Tidak Punya Akun? <a href="/register" style="color: #D97706; text-decoration: none;">Daftar</a>
+</div>
     </div>
 
     <!-- JavaScript untuk Show/Hide Password -->
