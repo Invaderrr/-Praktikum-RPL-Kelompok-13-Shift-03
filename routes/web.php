@@ -13,3 +13,8 @@ Route::get('/', function () {
 Route::get('/register', function () {
     return view('register');
 });
+
+// Rute untuk Halaman Dashboard Admin
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+});
