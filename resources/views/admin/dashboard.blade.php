@@ -1,492 +1,155 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - StocKING</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>StocKING - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <script>    
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                'stocking-yellow': '#F2C94C',
+                'stocking-border': '#E0E0E0',
+              },
+              fontFamily: {
+                sans: ['Montserrat', 'Inter', 'sans-serif'],
+              }
+            }
+          }
+        }
+    </script>
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #FDFCF8;
-            margin: 0;
-            overflow-x: hidden;
+        body { background-color: #FFFFFF; font-family: 'Montserrat', sans-serif; }
+        
+        /* CSS Summary Card Bertumpuk Kamu */
+        .summary-card-container { width: 244px; height: 135px; position: relative; }
+        .card-bottom-layer { 
+            position: absolute; width: 244px; height: 101px; top: 34px; left: 0; 
+            background-color: #FEF3C7; border-radius: 10px; z-index: 1; 
         }
-
-        /* Sidebar Styling */
-        .sidebar {
-            width: 289px; /* Sesuai spek Figma kamu */
-            height: 100vh; /* Full tinggi layar */
-            background-color: #FDFCF8;
-    
-            /* Border kanan dengan warna #0000004D (30% opacity) */
-            border-right: 1px solid rgba(0, 0, 0, 0.3); 
-    
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            z-index: 1000;
-            position: fixed; /* Biar tetap di kiri pas di-scroll */
-            top: 0;
-            left: 0;
+        .card-top-layer { 
+            position: absolute; width: 244px; height: 120px; top: 0; left: 0; 
+            background: linear-gradient(135deg, #F59E0B 0%, #DBD400 100%); 
+            border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); 
+            z-index: 2; padding: 20px; display: flex; flex-direction: column; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
         }
+        .card-top-layer h6 { font-size: 18px; font-weight: 700; color: #FFFFFF; margin: 0; }
+        .card-top-layer h3 { font-size: 24px; font-weight: 700; color: #FFFFFF; margin: 5px 0 0 0; }
+        .card-top-layer img { position: absolute; bottom: 15px; right: 15px; width: 32px; height: 32px; }
 
-        .brand-logo {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 20px 10px;
-        }
-
-        .brand-logo img {
-            width: 180px;
-            height: auto;        /* Biar gak gepeng */
-            object-fit: contain;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            margin: 0 20px 10px 20px;
-            border-radius: 10.64px;
-            color: #595959;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        .sidebar-bottom .menu-item {
-            margin-bottom: 2px;
-        }
-
-        /* 1. Kondisi Menu Biasa (Tidak Diklik) */
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            margin: 0 20px 10px 20px;
-            border-radius: 10.64px;
-            color: #595959; /* Teks Abu-abu */
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        .menu-item img {
-            width: 18.75px;
-            margin-right: 15px;
-            opacity: 0.8; 
-            transition: 0.3s;
-        }
-
-        /* 2. Kondisi Menu Active (Pas Diklik) */
-        .menu-item.active {
-            background: linear-gradient(93.69deg, rgba(219, 212, 0, 0.5) 0.99%, rgba(245, 158, 11, 0.5) 100%);
-            color: #151515; 
-        }
-
-        .menu-item.active img {
-            filter: brightness(0); 
-            opacity: 1;
-        }
-
-        .sidebar-bottom {
-            margin-top: auto;
-            margin-bottom: 20px;
-        }
-
-        /* Main Content Styling */
-        .main-content {
-            margin-left: 289px; 
-            padding: 77px 40px 40px 40px; 
-            background-color: #FDFCF8; 
-            min-height: 100vh;
-        }
-
-        /* Header Styling */
-        .top-header {
-            width: calc(100% - 289px); 
-            height: 98.38px;
-            background-color: #FDFCF8;
-            border-bottom: 0.5px solid rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 289px; 
-            z-index: 999; /* Di bawah sidebar dikit biar gak nabrak border */
-            justify-content: space-between;
-            padding: 0 40px;
-        }
-
-        .header-right {
-            flex: 1;
-            display: flex;
-            justify-content: space-between; 
-            align-items: center;
-            padding-left: 0; 
-        }
-
-        .search-bar {
-            width: 400px;
-            height: 51px;
-            border: 1.42px solid #999999;
-            border-radius: 16.36px;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            background-color: #FFFFFF;
-        }
-
-        .search-bar input {
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 100%;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 18px;
-            line-height: 28.47px;
-            color: #999999;
-        }
-
-        .search-bar input::placeholder {
-            color: #999999;
-        }
-
-        .search-bar img {
-            width: 24.5px;
-            height: 23.57px;
-            margin-right: 10px;
-        }
-
-        .header-icons {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .notif-icon {
-            width: 25.53px;
-            height: 28.36px;
-        }
-
-        .profile-avatar {
-            width: 47.5px;
-            height: 47.5px;
-            background-color: #00EAFF;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 20px;
-        }
-
-        /* Dashboard Body */
-        .dashboard-body {
-            padding: 40px;
-        }
-
-        .dashboard-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 32px;
-            margin-bottom: 5px;
-            color: #000000;
-        }
-
-        .dashboard-subtitle {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            font-size: 18px;
-            color: #595959;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
-
-        .report-date {
-            font-size: 18px;
-            font-weight: 700;
-            color: #D97706;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        /* Summary Cards */
-        /* 1. Wrapper buat ngatur posisi 4 kotak biar berjejer */
-        .summary-cards-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            padding: 30px;
-            margin-left: 289px; /* Sesuai lebar sidebar StocKING */
-            margin-top: 100px;  /* Biar gak ketutup header */
-        }
-
-/* 2. Wadah utama per satu kotak kartu */
-        .summary-card-container {
-            width: 244px;
-            height: 135px;
-            position: relative;
-        }
-
-/* 3. Kotak Bawah (Layer Krem) */
-        .card-bottom-layer {
-            position: absolute;
-            width: 244px;
-            height: 101px;
-            top: 34px; /* Efek ngintip dari bawah */
-            left: 0;
-            background-color: #FEF3C7;
-            border-radius: 10px;
-            z-index: 1;
-        }
-
-/* 4. Kotak Atas (Layer Gradasi Oren-Kuning) */
-        .card-top-layer {
-            position: absolute;
-            width: 244px;
-            height: 120px;
-            top: 0;
-            left: 0;
-            background: linear-gradient(135deg, #F59E0B 0%, #DBD400 100%);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 2;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-/* 5. Styling Text Montserrat & Ikon */
-        .card-top-layer h6 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: #FFFFFF;
-            margin: 0;
-        }
-
-        .card-top-layer h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: #FFFFFF;
-            margin: 5px 0 0 0;
-        }
-
-        .card-top-layer img {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            width: 32px;
-            height: 32px;
-        }
-
-        /* Transaksi Terbaru Section */
-        .transaction-section {
-            border: 1px solid rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            height: 400px;
-            margin-top: 40px;
-            padding: 30px;
-            background-color: #FFFFFF;
-        }
-
-        .transaction-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 30px;
-        }
-
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 250px;
-        }
-
-        .empty-state img {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-
-        .empty-state p {
-            font-weight: 600;
-            font-size: 20px;
-            color: rgba(29, 29, 29, 0.5);
+        /* Style Section Transaksi */
+        .transaction-section { 
+            border: 1px solid rgba(0, 0, 0, 0.3); border-radius: 10px; 
+            margin-top: 40px; padding: 30px; background-color: #FFFFFF; 
         }
     </style>
 </head>
-<body>
-    <header class="top-header">
-    <div class="header-left">
-        <img src="{{ asset('img/STOCKING.png') }}" alt="StocKING" class="logo-header">
+<body class="flex h-screen overflow-hidden">
+    <aside class="w-64 border-r border-stocking-border flex flex-col bg-[#FFFFFF] h-full">
+    <div class="p-6">
+        <img alt="STOCKING Logo" class="h-8" src="{{ asset('img/STOCKING.png') }}"/>
     </div>
+
+    <nav class="flex-1 px-4 mt-4 space-y-2">
+       <a href="{{ url('/admin/dashboard') }}" 
+    class="flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200 
+    {{ request()->routeIs('admin.dashboard') ? 'text-black shadow-sm' : 'text-[#828282] hover:text-black hover:bg-gray-50' }}"
+    style="{{ request()->routeIs('admin.dashboard') ? 'background: linear-gradient(93.69deg, rgba(219, 212, 0, 0.5) 0.99%, rgba(245, 158, 11, 0.5) 100%);' : '' }}">
     
-    <div class="header-right">
-        <div class="search-bar">
-            <input type="text" class="search-input" placeholder="Search">
-            <img src="{{ asset('img/Search.png') }}" class="search-icon">
-        </div>
-        
-        <div class="header-icons">
-            <img src="{{ asset('img/Notifikasi.png') }}" alt="Notif" class="notif-icon">
-            <div class="profile-avatar">A</div>
-        </div>
-    </div>
-</header>
-
-    <div class="sidebar">
-        <div class="brand-logo">
-            <img src="{{ asset('img/STOCKING.png') }}" alt="Logo StocKING">
-        </div>
+    <img alt="Home Icon" 
+         class="w-5 h-5 mr-3 {{ request()->routeIs('admin.dashboard') ? 'brightness-0' : 'opacity-60 grayscale' }}" 
+         src="{{ asset('img/Home.png') }}"/>
     
-        <a href="#" class="menu-item active">
-            <img src="{{ asset('img/Home.png') }}" alt="Home"> Dashboard
+    <span class="text-sm">Dashboard</span>
+</a>
+
+        <a href="{{ route('admin.inventaris') }}" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors">
+            <img alt="Inventaris Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Inventoris.png') }}"/>
+            <span class="text-sm font-medium">Inventaris</span>
         </a>
+    </nav>
 
-        <a href="#" class="menu-item">
-            <img src="{{ asset('img/Inventoris.png') }}" alt="Inventaris"> Inventaris
+    <div class="p-4 mt-auto space-y-2">
+        <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="#">
+            <img alt="Settings Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Settings.png') }}"/>
+            <span class="text-sm font-medium">Pengaturan</span>
         </a>
-
-        <div class="sidebar-bottom">
-            <a href="#" class="menu-item" style="color: #595959; background: transparent;">
-                <img src="{{ asset('img/Settings.png') }}" alt="Pengaturan"> Pengaturan
-            </a>
-            <a href="#" class="menu-item" style="color: rgba(89,89,89,0.5); background: transparent;">
-                <img src="{{ asset('img/Logout.png') }}" alt="Logout"> Log Out
-            </a>
-        </div>
+        <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="#">
+            <img alt="Logout Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Logout.png') }}"/>
+            <span class="text-sm font-medium">Log Out</span>
+        </a>
     </div>
+</aside>
 
-    <div class="main-content">
-        <div class="top-header">
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-                <img src="{{ asset('img/Search.png') }}" alt="Search">
-            </div>
-            
-            <div class="header-icons">
-                <img src="{{ asset('img/Notifikasi.png') }}" alt="Notifikasi" class="notif-icon">
-                
-                @php
-                    $username = auth()->user()->username ?? 'Admin';
-                    $role = auth()->user()->role ?? 'admin';
-                    $initial = strtoupper(substr($username, 0, 1));
-                    // Jika butuh paksa "A" untuk semua admin, gunakan:
-                    // $initial = ($role == 'admin') ? 'A' : strtoupper(substr($username, 0, 1));
-                @endphp
-                <div class="profile-avatar">{{ $initial }}</div>
-            </div>
-        </div>
-
-        <div class="dashboard-body">
-            <div class="dashboard-title">Dashboard</div>
-            <div class="dashboard-subtitle">Hallo, {{ ucfirst(auth()->user()->username ?? 'Admin StocKING') }}</div>
-
-            @php
-                \Carbon\Carbon::setLocale('id');
-                $tanggalMulai = \Carbon\Carbon::now()->subDays(6)->translatedFormat('d F Y');
-                $tanggalAkhir = \Carbon\Carbon::now()->translatedFormat('d F Y');
-            @endphp
-            <div class="report-date">
-                Laporan Periode {{ $tanggalMulai }} s/d {{ $tanggalAkhir }}
-            </div>
-
-            <div class="row g-4">
-            <div class="col-md-3">
-                <div class="summary-card-container">
-                    <div class="card-bottom-layer"></div>
-                    <div class="card-top-layer">
-                        <h6>Total Transaksi</h6>
-                        <h3>0 Penjualan</h3>
-                        <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="summary-card-container">
-                    <div class="card-bottom-layer"></div>
-                    <div class="card-top-layer">
-                        <h6>Pemasukan</h6>
-                        <h3>Rp. 0</h3>
-                        <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="summary-card-container">
-                    <div class="card-bottom-layer"></div>
-                    <div class="card-top-layer">
-                        <h6>Total Bahan Baku</h6>
-                        <h3>17</h3>
-                        <img src="{{ asset('img/Package.png') }}" alt="Package">
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="summary-card-container">
-                    <div class="card-bottom-layer"></div>
-                    <div class="card-top-layer">
-                        <h6>Peringatan Stok</h6>
-                        <h3>0</h3>
-                        <img src="{{ asset('img/Warning.png') }}" alt="Warning">
-                    </div>
+<div class="flex-1 flex flex-col overflow-hidden">
+    <header class="h-16 border-b border-stocking-border bg-white flex items-center justify-between px-8">
+        <div class="flex-1 max-w-md">
+            <div class="relative">
+                <input class="w-full pl-4 pr-10 py-1.5 border border-stocking-border rounded-lg text-sm outline-none" placeholder="Search" type="text"/>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Search.png') }}"/>
                 </div>
             </div>
         </div>
-
-            <div class="transaction-section">
-                <div class="transaction-title">Transaksi Terbaru</div>
-                
-                @php
-                    // Ini dummy variable, nanti ganti dengan lemparan data dari Controller
-                    $transaksiTerbaru = []; 
-                @endphp
-
-                @if(count($transaksiTerbaru) > 0)
-                    <table class="table table-borderless">
-                        <thead style="border: 1px solid #D97706; border-radius: 10px;">
-                            <tr>
-                                <th>Tanggal/Waktu</th>
-                                <th>Nama Item</th>
-                                <th>Harga Satuan</th>
-                                <th>Jumlah</th>
-                                <th>Harga</th>
-                                <th>Total</th>
-                                <th>Jenis</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($transaksiTerbaru as $trx)
-                                <tr>
-                                    </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @else
-                    <div class="empty-state">
-                        <img src="{{ asset('img/Frown.png') }}" alt="Frown">
-                        <p>Maaf, tidak ada transaksi terbaru</p>
-                    </div>
-                @endif
+        <div class="flex items-center space-x-6">
+            <img alt="Notification Icon" class="w-6 h-6" src="{{ asset('img/Notifikasi.png') }}"/>
+            <div class="w-10 h-10 rounded-full bg-[#00DBFF] flex items-center justify-center text-white font-bold border border-white shadow-sm">
+                {{ strtoupper(substr(auth()->user()->username ?? 'A', 0, 1)) }}
             </div>
-
         </div>
-    </div>
+    </header>
 
-</body>
+    <main class="flex-1 overflow-y-auto p-8 bg-white">
+        <div class="mb-8">
+            <h2 style="color: #151515; font-size: 33.05px;" class="font-bold">Dashboard</h2>
+            <p style="color: #595959;" class="text-sm">Hallo, {{ ucfirst(auth()->user()->username ?? 'Admin StocKING') }}</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6">
+            <div class="summary-card-container">
+                <div class="card-bottom-layer"></div>
+                <div class="card-top-layer">
+                    <h6>Total Transaksi</h6>
+                    <h3>0 Penjualan</h3>
+                    <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
+                </div>
+            </div>
+            <div class="summary-card-container">
+                <div class="card-bottom-layer"></div>
+                <div class="card-top-layer">
+                    <h6>Pemasukan</h6>
+                    <h3>0</h3>
+                    <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
+                </div>
+            </div>
+            <div class="summary-card-container">
+                <div class="card-bottom-layer"></div>
+                <div class="card-top-layer">
+                    <h6>Total Bahan Baku</h6>
+                    <h3>{{ $totalBahan }}</h3>
+                    <img src="{{ asset('img/Package.png') }}" alt="Package">
+                </div>
+            </div>
+            <div class="summary-card-container">
+                <div class="card-bottom-layer"></div>
+                <div class="card-top-layer">
+                    <h6>Peringatan Stok</h6>
+                    <h3>0</h3>
+                    <img src="{{ asset('img/Warning.png') }}" alt="Warning">
+                </div>
+            </div>
+        </div> <div class="transaction-section mt-12">
+            <h3 class="text-2xl font-bold mb-6">Transaksi Terbaru</h3>
+            <div class="flex flex-col items-center justify-center py-10 opacity-50">
+                <img src="{{ asset('img/Frown.png') }}" alt="Empty" class="w-16 h-16 mb-4">
+                <p class="text-lg font-semibold">Maaf, tidak ada transaksi terbaru</p>
+            </div>
+        </div>
+    </main>
+</div> <body>
 </html>
