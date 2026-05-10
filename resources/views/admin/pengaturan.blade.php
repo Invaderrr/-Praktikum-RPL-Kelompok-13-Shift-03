@@ -96,10 +96,10 @@
             <span class="text-sm font-medium">Pengaturan</span>
         </a>
         
-        <a href="#" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors font-semibold">
+        <button onclick="openLogoutModal()" class="w-full flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors font-semibold">
             <img alt="Logout Icon" class="w-5 h-5 mr-3 opacity-60 grayscale" src="{{ asset('img/Logout.png') }}"/>
             <span class="text-sm">Log Out</span>
-        </a>
+        </button>
     </div>
 </aside>
 
@@ -197,7 +197,32 @@
             reader.readAsDataURL(file);
         }
     });
+
+    function openLogoutModal() {
+        document.getElementById('logoutModal').classList.remove('hidden');
+        document.getElementById('logoutModal').classList.add('flex');
+    }
+    function closeLogoutModal() {
+        document.getElementById('logoutModal').classList.add('hidden');
+        document.getElementById('logoutModal').classList.remove('flex');
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('logoutModal');
+        if (event.target == modal) {
+            closeLogoutModal();
+        }
+    }
 </script>
 
+<div id="logoutModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="bg-[#EDEDED] rounded-[20px] p-10 shadow-2xl max-w-sm w-full mx-4 text-center font-sans">
+        <h3 class="text-[22px] font-bold text-[#151515] mb-8 leading-tight">Apakah Anda Yakin Ingin Keluar?</h3>
+        <div class="flex justify-center gap-4">
+            <button onclick="closeLogoutModal()" class="bg-[#1D1D1D] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition-all w-28">Batal</button>
+            <a href="{{ url('/') }}" class="bg-[#1D1D1D] text-white font-bold py-2 px-2 rounded-lg hover:opacity-90 transition-all w-28 text-center">Konfirmasi</a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

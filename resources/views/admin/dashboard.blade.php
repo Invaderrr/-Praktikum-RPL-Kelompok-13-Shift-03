@@ -74,16 +74,18 @@
         </a>
     </nav>
 
-    <div class="p-4 mt-auto space-y-2">
+    <div class="p-4 space-y-2">
         <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="{{ route('admin.pengaturan') }}">
             <img alt="Settings Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Settings.png') }}"/>
             <span class="text-sm font-medium">Pengaturan</span>
         </a>
-        <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="#">
-            <img alt="Logout Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Logout.png') }}"/>
-            <span class="text-sm font-medium">Log Out</span>
-        </a>
-    </div>
+
+    <button onclick="openLogoutModal()" 
+            class="w-full flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors font-semibold focus:outline-none">
+        <img alt="Logout Icon" class="w-5 h-5 mr-3 opacity-60 grayscale" src="{{ asset('img/Logout.png') }}"/>
+        <span class="text-sm">Log Out</span>
+    </button>
+</div>
 </aside>
 
 <div class="flex-1 flex flex-col overflow-hidden">
@@ -104,8 +106,8 @@
         </div>
     </header>
 
-    <main class="flex-1 overflow-y-auto p-8 bg-white">
-        <div class="mb-8">
+    <main class="flex-1 overflow-y-auto px-10 pb-10 pt-2 bg-white">
+        <div class="mb-6">
             <h2 style="color: #151515; font-size: 33.05px;" class="font-bold">Dashboard</h2>
             <p style="color: #595959;" class="text-sm">Hallo, {{ ucfirst(auth()->user()->username ?? 'Admin StocKING') }}</p>
         </div>
@@ -151,5 +153,44 @@
             </div>
         </div>
     </main>
-</div> <body>
+</div> 
+
+<script>
+    // Pastikan modal berada di layer terluar saat halaman dimuat
+    document.addEventListener("DOMContentLoaded", function() {
+        const modalLogout = document.getElementById('logoutModal');
+        if (modalLogout) {
+            document.body.appendChild(modalLogout);
+        }
+    });
+
+    function openLogoutModal() {
+        const modal = document.getElementById('logoutModal');
+        if (modal) modal.style.display = 'flex';
+    }
+
+    function closeLogoutModal() {
+        const modal = document.getElementById('logoutModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    // Klik di luar modal untuk menutup
+    window.addEventListener('click', function(event) {
+        const modalLogout = document.getElementById('logoutModal');
+        if (event.target == modalLogout) {
+            closeLogoutModal();
+        }
+    });
+</script>
+
+<div id="logoutModal" style="display: none; position: fixed; inset: 0; z-index: 9999; align-items: center; justify-content: center; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
+    <div class="bg-[#EDEDED] rounded-[20px] p-10 shadow-2xl max-w-sm w-full mx-4 text-center font-sans">
+        <h3 class="text-[22px] font-bold text-[#151515] mb-8 leading-tight">Apakah Anda Yakin Ingin Keluar?</h3>
+        <div class="flex justify-center gap-4">
+            <button onclick="closeLogoutModal()" class="bg-[#1D1D1D] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition-all w-28">Batal</button>
+            <a href="{{ url('/') }}" class="bg-[#1D1D1D] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition-all w-28 flex items-center justify-center">Konfirmasi</a>
+        </div>
+    </div>
+</div>
+<body>
 </html>
