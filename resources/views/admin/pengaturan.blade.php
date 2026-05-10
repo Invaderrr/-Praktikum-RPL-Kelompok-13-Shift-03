@@ -93,13 +93,10 @@
             <span class="text-sm font-medium">Pengaturan</span>
         </a>
         
-        <form method="POST" action="#">
-            @csrf
-            <button type="submit" class="w-full flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors font-semibold text-left">
-                <img alt="Logout Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Logout.png') }}"/>
-                <span class="text-sm">Log Out</span>
-            </button>
-        </form>
+        <button type="button" onclick="openLogoutModal()" class="w-full flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors font-semibold text-left">
+        <img alt="Logout Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Logout.png') }}"/>
+        <span class="text-sm">Log Out</span>
+    </button>
     </div>
 </aside>
 
@@ -199,6 +196,46 @@
             reader.readAsDataURL(file);
         }
     });
+</script>
+
+<div id="logoutModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="bg-[#EDEDED] rounded-[20px] p-10 shadow-2xl max-w-sm w-full mx-4">
+        <h3 class="text-center text-[22px] font-bold text-[#151515] mb-8 leading-tight">
+            Apakah Anda Yakin Ingin Keluar?
+        </h3>
+        <div class="flex justify-center gap-4">
+            <button onclick="closeLogoutModal()" 
+                class="bg-[#1D1D1D] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition-all text-base w-28">
+                Batal
+            </button>
+            <a href="{{ route('login') }}" 
+                class="bg-[#1D1D1D] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition-all text-base w-28 text-center">
+                Konfirmasi
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openLogoutModal() {
+        const modal = document.getElementById('logoutModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeLogoutModal() {
+        const modal = document.getElementById('logoutModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    // Menutup modal jika klik di luar kotak putih
+    window.onclick = function(event) {
+        const modal = document.getElementById('logoutModal');
+        if (event.target == modal) {
+            closeLogoutModal();
+        }
+    }
 </script>
 
 </body>
