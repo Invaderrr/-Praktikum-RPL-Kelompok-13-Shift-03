@@ -22,3 +22,8 @@ Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('adm
 
 // Rute untuk Halaman Inventaris Admin
 Route::get('/admin/inventaris', [InventarisController::class, 'index'])->name('admin.inventaris');
+
+// Rute untuk Halaman Pengaturan Admin
+Route::get('/admin/pengaturan', function () {
+    return view('admin.pengaturan'); 
+})->name('admin.pengaturan');
