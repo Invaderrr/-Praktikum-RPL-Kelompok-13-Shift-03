@@ -185,7 +185,7 @@
 
 <div id="logoutModal" style="display: none; position: fixed; inset: 0; z-index: 9999; align-items: center; justify-content: center; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
     <div class="bg-[#EDEDED] rounded-[20px] p-10 shadow-2xl max-w-sm w-full mx-4 text-center font-sans">
-        <h3 class="text-[22px] font-bold text-[#151515] mb-8 leading-tight">Apakah Anda Yakin Ingin Keluar?</h3>
+        <h3 class="text-[22px] font-bold text-[#151515] mb-8 leading-tight">Apakah anda yakin ingin keluar?</h3>
         <div class="flex justify-center gap-4">
             <button onclick="closeLogoutModal()" class="bg-[#1D1D1D] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition-all w-28">Batal</button>
             <a href="{{ url('/') }}" class="bg-[#1D1D1D] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition-all w-28 flex items-center justify-center">Konfirmasi</a>

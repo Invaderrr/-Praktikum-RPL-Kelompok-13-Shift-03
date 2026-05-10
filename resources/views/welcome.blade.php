@@ -139,22 +139,22 @@
     
     <div class="login-subtitle">Silahkan Login untuk Melanjutkan</div>
 
-    <form action="/admin/dashboard" method="GET">
-        <div class="mb-3">
-            <label class="form-label">Username</label>
-            <input type="text" class="form-control" placeholder="Masukkan username anda">
-        </div>
+    <form action="/" method="POST">
+    @csrf <div class="mb-3">
+    <label class="form-label">Username</label>
+    <input type="text" name="username" class="form-control" placeholder="Masukkan username anda" required>
+</div>
 
-        <div class="mb-3">
-            <label class="form-label">Password</label>
-            <div class="password-wrapper">
-                <input type="password" id="password" class="form-control" placeholder="Masukkan password anda">
-                <img src="{{ asset('img/Icon-eye.png') }}" id="togglePassword" alt="Show" class="icon-eye">
-            </div> 
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <div class="password-wrapper">
+            <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password anda" required>
+            <img src="{{ asset('img/Icon-eye.png') }}" id="togglePassword" alt="Show" class="icon-eye">
         </div> 
-        
-        <button type="submit" class="btn-login">Masuk</button>
-    </form>
+    </div> 
+    
+    <button type="submit" class="btn-login">Masuk</button>
+</form>
 
     <div class="footer-text">
         Tidak Punya Akun? <a href="/register" style="color: #D97706; text-decoration: none;">Daftar</a>
