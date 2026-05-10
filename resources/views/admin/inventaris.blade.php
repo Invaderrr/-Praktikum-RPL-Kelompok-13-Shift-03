@@ -110,7 +110,7 @@
 </a>
 </nav>
     <div class="p-4 space-y-2">
-        <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="#">
+        <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="{{ route('admin.pengaturan') }}">
             <img alt="Settings Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Settings.png') }}"/>
             <span class="text-sm font-medium">Pengaturan</span>
         </a>
@@ -146,7 +146,7 @@
         </div>
     </header>
 
-    <main class="flex-1 overflow-y-auto p-8 bg-white">
+    <main class="flex-1 overflow-y-auto px-10 pb-10 pt-2 bg-white">
         <div class="flex justify-between items-start mb-6">
             <div>
                 <h2 style="color: #151515; font-size: 33.05px;" class="font-bold">Inventaris</h2>
