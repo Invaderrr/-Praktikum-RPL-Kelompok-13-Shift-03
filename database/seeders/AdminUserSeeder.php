@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder 
-{ // <--- KURUNG INI HARUS ADA
+{ 
     public function run(): void
     {
         User::create([
@@ -16,6 +16,15 @@ class AdminUserSeeder extends Seeder
             'email' => 'adminstocking@gmail.com',
             'password' => Hash::make('admin123'),
             'role' => 'admin',
+        ]);
+
+        // Akun User (Pembeli)
+        User::create([
+            'name' => 'Sarah',
+            'username' => 'Sarah123',
+            'email' => 'sarah@gmail.com',
+            'password' => Hash::make('sarah123'),
+            'role' => 'user', 
         ]);
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventarisController;
 use Illuminate\Http\Request; // Tambahkan ini
 use Illuminate\Support\Facades\Auth; // Tambahkan ini
+use App\Http\Controllers\BelanjaController;
 
 /* Web Routes */
 
@@ -40,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
         if (auth()->user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
-        return redirect()->route('user.katalog');
+        return redirect()->route('user.belanja');
     })->name('dashboard');
 
     // --- AREA ADMIN ---
@@ -53,9 +54,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // --- AREA USER (PEMBELI) ---
-    Route::get('/katalog', function () {
-        return view('user.katalog'); 
-    })->name('user.katalog');
+    Route::prefix('user')->name('user.')->group(function () {
+        // URL-nya jadi /user/belanja, nama rutenya jadi user.belanja
+        Route::get('/belanja', [BelanjaController::class, 'index'])->name('belanja');
+        
+        // Rute untuk proses potong stok
+        Route::post('/checkout', [BelanjaController::class, 'checkout'])->name('checkout');
+    });
 
     // OPSIONAL: Tambahkan rute logout agar bisa ganti akun
     Route::post('/logout', function (Request $request) {
