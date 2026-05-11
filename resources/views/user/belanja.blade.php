@@ -72,7 +72,7 @@
             <img alt="Belanja Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Belanja.png') }}"/> <span class="text-sm">Belanja</span>
         </a>
 
-        <a href="#" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-all">
+        <a href="{{ route('user.transaksi') }}" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-all">
         <img alt="Transaksi Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Dollar.png') }}"/> 
         <span class="text-sm font-medium">Transaksi</span>
     </a>

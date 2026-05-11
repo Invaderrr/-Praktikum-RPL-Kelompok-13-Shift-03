@@ -51,4 +51,15 @@ class BelanjaController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    
+    public function riwayat()
+{
+    // Mengambil transaksi milik user yang sedang login saja
+    $riwayat = \App\Models\Transaksi::with('details')
+                ->where('user_id', auth()->id())
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+    return view('user.transaksi', compact('riwayat'));
+}
 }

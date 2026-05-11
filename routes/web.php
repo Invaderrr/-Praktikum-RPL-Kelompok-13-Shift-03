@@ -60,6 +60,8 @@ Route::middleware(['auth'])->group(function () {
         
         // Rute Checkout yang benar-benar akan mengisi tabel Transaksi Terbaru
         Route::post('/checkout', [CheckoutController::class, 'proses'])->name('checkout.proses');
+    
+        Route::get('/transaksi', [BelanjaController::class, 'riwayat'])->name('transaksi');
     });
 
     // Logout
