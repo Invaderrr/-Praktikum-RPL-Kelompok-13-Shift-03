@@ -117,7 +117,7 @@
                 <div class="card-bottom-layer"></div>
                 <div class="card-top-layer">
                     <h6>Total Transaksi</h6>
-                    <h3>0 Penjualan</h3>
+                    <h3>{{ $totalTransaksi }} Penjualan</h3>
                     <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
                 </div>
             </div>
@@ -125,7 +125,7 @@
                 <div class="card-bottom-layer"></div>
                 <div class="card-top-layer">
                     <h6>Pemasukan</h6>
-                    <h3>0</h3>
+                    <h3>Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</h3>
                     <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
                 </div>
             </div>
@@ -141,19 +141,65 @@
                 <div class="card-bottom-layer"></div>
                 <div class="card-top-layer">
                     <h6>Peringatan Stok</h6>
-                    <h3>0</h3>
+                    <h3>{{ $stokMenipis }} Bahan</h3>
                     <img src="{{ asset('img/Warning.png') }}" alt="Warning">
                 </div>
             </div>
-        </div> <div class="transaction-section mt-12">
-            <h3 class="text-2xl font-bold mb-6">Transaksi Terbaru</h3>
-            <div class="flex flex-col items-center justify-center py-10 opacity-50">
-                <img src="{{ asset('img/Frown.png') }}" alt="Empty" class="w-16 h-16 mb-4">
-                <p class="text-lg font-semibold">Maaf, tidak ada transaksi terbaru</p>
-            </div>
+        </div> 
+        <div class="transaction-section mt-12">
+    <h3 class="text-2xl font-bold mb-6">Transaksi Terbaru</h3>
+
+    @if($transaksiTerbaru->count() > 0)
+        <div class="overflow-hidden rounded-xl border border-[#FEF3C7]">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-[#FEF3C7] text-black text-sm font-bold">
+                        <th class="px-4 py-3">Tanggal/Waktu</th>
+                        <th class="px-4 py-3">Nama Item</th>
+                        <th class="px-4 py-3">Harga Satuan</th>
+                        <th class="px-4 py-3">Jumlah</th>
+                        <th class="px-4 py-3">Harga</th>
+                        <th class="px-4 py-3">Total</th>
+                        <th class="px-4 py-3">Jenis</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    @foreach($transaksiTerbaru as $t)
+                        @foreach($t->details as $index => $d)
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="px-4 py-2 text-sm">
+                                @if($index == 0)
+                                    {{ $t->created_at->format('d M Y') }}<br>
+                                    <span class="text-[10px]">{{ $t->created_at->format('H.i') }} WIB</span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 text-sm">{{ $d->nama_item }}</td>
+                            <td class="px-4 py-2 text-sm">Rp {{ number_format($d->harga_satuan, 0, ',', '.') }}</td>
+                            <td class="px-4 py-2 text-sm">{{ $d->jumlah }}</td>
+                            <td class="px-4 py-2 text-sm">Rp {{ number_format($d->subtotal, 0, ',', '.') }}</td>
+                            <td class="px-4 py-2 text-sm">
+                                @if($index == 0)
+                                    Rp {{ number_format($t->total_harga, 0, ',', '.') }}
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 text-sm">
+                                @if($index == 0)
+                                    {{ ucfirst($t->metode_pembayaran) }}
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-    </main>
-</div> 
+    @else
+        <div class="flex flex-col items-center justify-center py-10 opacity-50">
+            <img src="{{ asset('img/Frown.png') }}" alt="Empty" class="w-16 h-16 mb-4">
+            <p class="text-lg font-semibold">Maaf, tidak ada transaksi terbaru</p>
+        </div>
+    @endif
+</div>
 
 <script>
     // Pastikan modal berada di layer terluar saat halaman dimuat

@@ -3,30 +3,30 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventarisController;
-use Illuminate\Http\Request; // Tambahkan ini
-use Illuminate\Support\Facades\Auth; // Tambahkan ini
 use App\Http\Controllers\BelanjaController;
+use App\Http\Controllers\CheckoutController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /* Web Routes */
 
-// 1. Rute Publik
+// 1. Rute Publik (Login & Register)
 Route::get('/', function () {
     return view('welcome');
 })->name('login');
 
-// TAMBAHKAN INI: Proses pengolahan data login
 Route::post('/', function (Request $request) {
+    // Sesuaikan 'username' atau 'email' dengan yang ada di database kamu
     $credentials = $request->only('username', 'password');
 
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
-        // Arahkan ke rute 'dashboard' (jembatan pemisah role)
         return redirect()->intended('dashboard');
     }
 
-    // Jika gagal, balik ke halaman login dengan pesan error
+    // Pastikan key error sesuai dengan input (username)
     return back()->withErrors([
-        'email' => 'Email atau password salah.',
+        'username' => 'Username atau password salah.',
     ]);
 });
 
@@ -37,6 +37,7 @@ Route::get('/register', function () {
 // 2. Rute Terproteksi (Harus Login)
 Route::middleware(['auth'])->group(function () {
 
+    // Jembatan pemisah role
     Route::get('/dashboard', function () {
         if (auth()->user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
@@ -55,14 +56,13 @@ Route::middleware(['auth'])->group(function () {
 
     // --- AREA USER (PEMBELI) ---
     Route::prefix('user')->name('user.')->group(function () {
-        // URL-nya jadi /user/belanja, nama rutenya jadi user.belanja
         Route::get('/belanja', [BelanjaController::class, 'index'])->name('belanja');
         
-        // Rute untuk proses potong stok
-        Route::post('/checkout', [BelanjaController::class, 'checkout'])->name('checkout');
+        // Rute Checkout yang benar-benar akan mengisi tabel Transaksi Terbaru
+        Route::post('/checkout', [CheckoutController::class, 'proses'])->name('checkout.proses');
     });
 
-    // OPSIONAL: Tambahkan rute logout agar bisa ganti akun
+    // Logout
     Route::post('/logout', function (Request $request) {
         Auth::logout();
         $request->session()->invalidate();

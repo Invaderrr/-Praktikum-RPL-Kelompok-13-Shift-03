@@ -45,35 +45,49 @@
 
         /* Checkbox Custom Style */
         .custom-checkbox {
-            appearance: none;
-            background-color: #151515;
-            border: 2px solid rgba(0, 0, 0, 0.30); /* 30% Opacity */
-            border-radius: 4px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-        }
-        .custom-checkbox:checked {
-            /* Tambahkan !important untuk memaksa warna kuning muncul */
-            background-color: #F2C94C !important; 
-            border: 2px solid #000000 !important;
-            
-            /* Tambahkan ini untuk mematikan warna biru bawaan browser */
-            accent-color: #F2C94C;
-            appearance: none;
-            -webkit-appearance: none;
-        }
-        .custom-checkbox:checked::after {
-            content: '✔';
-            position: absolute;
-            color: black;
-            font-size: 14px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+        -webkit-appearance: none;
+        appearance: none;
+        background-color: #ffffff;
+        margin: 0;
+        font: inherit;
+        color: currentColor;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #D1D5DB; /* Abu-abu netral saat kosong */
+        border-radius: 6px;
+        display: grid;
+        place-content: center;
+        cursor: pointer;
+        transition: all 0.15s ease-in-out;
+    }
+
+    /* Menghilangkan ring biru saat diklik */
+    .custom-checkbox:focus {
+        outline: none;
+        border-color: #F2C94C;
+        box-shadow: 0 0 0 2px #FEF3C7;
+    }
+
+    .custom-checkbox:checked {
+        background-color: #F2C94C !important;
+        border-color: #F2C94C !important;
+    }
+
+    .custom-checkbox::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em black; /* Warna centang hitam */
+        
+        /* Membuat bentuk centang */
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+
+    .custom-checkbox:checked::before {
+        transform: scale(1);
+    }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden bg-white" x-data="{ openModal: false, openCategoryModal: false }">
@@ -209,46 +223,57 @@
     </div>
 </div>
 
-        <div class="bg-white rounded-xl border border-stocking-border overflow-hidden shadow-sm">
-            <div class="overflow-x-auto table-container">
-                <table class="w-full text-left border-separate border-spacing-0"> <thead>
-                    <tr style="color: #595959; font-size: 18px; background-color: #FDFCF8;" class="font-bold uppercase tracking-wider">
-                        <th class="py-4 px-6 w-28 border-t-2 border-b-2 border-l-2 border-[#F6A821] rounded-l-lg bg-[#FDFCF8]">
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-all" class="custom-checkbox mr-3"/>
-                                <span>Semua</span>
-                            </div>
-                        </th>
-            <th class="py-4 px-6 border-y-2 border-[#F6A821]">NAMA ITEM</th>
-            <th class="py-4 px-6 border-y-2 border-[#F6A821]">KATEGORI</th>
-            <th class="py-4 px-6 border-y-2 border-[#F6A821]">STOK</th>
-            <th class="py-4 px-6 border-y-2 border-[#F6A821]">STOK MIN</th>
-            <th class="py-4 px-6 border-t-2 border-b-2 border-r-2 border-[#F6A821] rounded-r-lg bg-[#FDFCF8]">HARGA</th>
-        </tr>
+        <div class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse"> 
+            <thead>
+                <tr class="bg-[#FEF3C7] text-black text-sm font-bold">
+                    <th class="py-4 px-6 w-28">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="check-all" class="custom-checkbox mr-3"/>
+                            <span>Semua</span>
+                        </div>
+                    </th>
+                    <th class="py-4 px-6">Nama Item</th>
+                    <th class="py-4 px-6">Kategori</th>
+                    <th class="py-4 px-6">Stok</th>
+                    <th class="py-4 px-6">Stok Min</th>
+                    <th class="py-4 px-6 rounded-tr-xl">Harga</th>
+                </tr>
             </thead>
-            <tbody style="color: #1D1D1D; font-size: 16px;" class="font-medium">
+            <tbody class="text-sm font-medium text-gray-700">
                 @forelse($bahan as $item)
-                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
                     <td class="py-4 px-6">
-                        <input type="checkbox" class="custom-checkbox item-checkbox"/>
+                        <input type="checkbox" class="custom-checkbox item-checkbox">
                     </td>
-                    <td class="py-4 px-6">{{ $item->nama_item }}</td>
-                    <td class="py-4 px-6">{{ $item->kategori }}</td>
+                    <td class="py-4 px-6 text-gray-800">{{ $item->nama_item }}</td>
+                    <td class="py-4 px-6">
+                        <span class="px-2 py-1 bg-gray-100 rounded-md text-[10px] text-gray-600">
+                            {{ $item->kategori }}
+                        </span>
+                    </td>
+
                     <td class="py-4 px-6">{{ $item->stok }} {{ $item->satuan }}</td>
-                    <td class="py-4 px-6">{{ $item->stok_min }} {{ $item->satuan }}</td>
-                    <td class="py-4 px-6">Rp. {{ number_format($item->harga, 0, ',', '.') }}/{{ $item->satuan }}</td>
+                    <td class="py-4 px-6 text-red-500">{{ $item->stok_min }} {{ $item->satuan }}</td>
+                    <td class="py-4 px-6 text-gray-800">
+                        Rp {{ number_format($item->harga, 0, ',', '.') }}/{{ $item->satuan }}
+                    </td>
                 </tr>
                 @empty
                 <tr>
                     <td colspan="6" class="text-center py-10 text-gray-400">
-                        Data belum ada di gudang.
+                        <div class="flex flex-col items-center">
+                            <span class="text-4xl mb-2">📦</span>
+                            <p>Bahan baku kosong.</p>
+                        </div>
                     </td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
-            </div>
-        </div>
+    </div>
+</div>
     </main>
 </div>
 
@@ -360,11 +385,33 @@
         }
 
         // --- LOGIKA CHECKBOX INVENTARIS ---
-        const checkboxes = document.querySelectorAll('.item-checkbox');
-        const btnEdit = document.getElementById('btn-edit');
-        const btnDelete = document.getElementById('btn-delete');
-        const checkAll = document.getElementById('check-all');
+    const checkboxes = document.querySelectorAll('.item-checkbox');
+    const checkAll = document.getElementById('check-all');
+    const btnEdit = document.getElementById('btn-edit');
+    const btnDelete = document.getElementById('btn-delete');
 
+    // 1. Fungsi saat "Check All" diklik
+    checkAll.addEventListener('change', function() {
+        checkboxes.forEach(cb => {
+            cb.checked = this.checked;
+        });
+        updateButtons();
+    });
+
+    // 2. Fungsi saat Checkbox Satuan diklik
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            // Cek apakah semua checkbox satuan tercentang
+            const allChecked = document.querySelectorAll('.item-checkbox:checked').length === checkboxes.length;
+            
+            // Update status Check All (kalau ada 1 aja yang lepas, Check All otomatis lepas)
+            checkAll.checked = allChecked;
+            
+            updateButtons();
+        });
+    });
+
+// 3. Fungsi Update Tombol (Sudah benar, tinggal dipastikan terpanggil)
         function updateButtons() {
             const checkedCount = document.querySelectorAll('.item-checkbox:checked').length;
 
@@ -380,7 +427,9 @@
                 btnDelete.classList.add('flex');
             } else {
                 btnEdit.classList.add('hidden');
+                btnEdit.classList.remove('flex');
                 btnDelete.classList.add('hidden');
+                btnDelete.classList.remove('flex');
             }
         }
 

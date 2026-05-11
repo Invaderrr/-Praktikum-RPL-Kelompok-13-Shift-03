@@ -306,40 +306,46 @@
     }
 
     // Fungsi Terpisah untuk Kirim Data ke Laravel
-    async function sendDataToServer(method, address) {
-        try {
-            const response = await fetch("{{ route('user.checkout') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({
-                    items: cart,
-                    address: address,
-                    payment_method: method
-                })
-            });
+    async function sendDataToServer(metode, alamat) {
+    try {
+        // 1. Hitung totalValue DULU sebelum fetch
+        const totalValue = document.getElementById('total-price-display').innerText.replace(/[^0-9]/g, '');
 
-            const result = await response.json();
-            if (result.success) {
-                alert('Berhasil! Stok diperbarui.');
-                location.reload();
-            } else {
-                alert('Gagal: ' + result.error);
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            alert('Terjadi kesalahan koneksi.');
+        // 2. Baru panggil fetch
+        const response = await fetch("{{ route('user.checkout.proses') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                items: cart,
+                alamat: alamat,   // Menggunakan parameter 'address' dari fungsi
+                metode: metode,    // Menggunakan parameter 'method' dari fungsi
+                total_semua: totalValue 
+            })
+        });
+        // 3. Tambahkan pengecekan hasil
+        const result = await response.json();
+        if (response.ok) {
+            alert('Pesanan Berhasil!');
+            location.reload(); 
+        } else {
+            alert('Gagal: ' + (result.message || 'Terjadi kesalahan'));
         }
+
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Terjadi kesalahan koneksi.");
     }
+} // <-- Tutup fungsi di sini
 
     function closeModal() {
         document.getElementById('qrisModal').classList.remove('show');
         // Panggil pengiriman data setelah user menutup modal QRIS
-        const method = document.getElementById('payment-select').value;
-        const address = document.getElementById('address-input').value;
-        sendDataToServer(method, address);
+        const metode = document.getElementById('payment-select').value;
+        const alamat = document.getElementById('address-input').value;
+        sendDataToServer(metode, alamat);
     }
 </script>
 
