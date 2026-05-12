@@ -78,15 +78,15 @@
     </a>
     </nav>
 
-    <div class="p-4 space-y-2">
-        <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="#">
-            <img alt="Settings Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Settings.png') }}"/>
+        <div class="p-4 space-y-2 border-t border-gray-50">
+        <a href="{{ route('user.pengaturan') }}" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors font-semibold">
+            <img alt="Settings Icon" class="w-5 h-5 mr-3 opacity-60 grayscale" src="{{ asset('img/Settings.png') }}"/>
             <span class="text-sm font-medium">Pengaturan</span>
         </a>
-        <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="#">
-            <img alt="Logout Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Logout.png') }}"/>
-            <span class="text-sm font-medium">Log Out</span>
-        </a>
+            <button onclick="openLogoutModal()" class="w-full flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors font-semibold">
+        <img alt="Logout Icon" class="w-5 h-5 mr-3 opacity-60 grayscale" src="{{ asset('img/Logout.png') }}"/>
+        <span class="text-sm">Log Out</span>
+    </button>
     </div>
 </aside>
 
@@ -109,7 +109,7 @@
         </div>
     </header>
 
-    <main class="flex-1 overflow-y-auto px-6 pb-10 pt-6">
+    <main class="flex-1 overflow-y-auto px-10 pb-10 pt-2 bg-white">
         <div class="flex flex-row gap-6 w-full">
             <div class="flex-1">
                 <h2 class="text-3xl font-bold text-[#151515]">Belanja</h2>
@@ -376,6 +376,39 @@
         <div class="flex gap-3 mt-6">
             <button onclick="closeDeleteModal()" class="flex-1 py-2.5 bg-gray-100 text-gray-600 rounded-xl font-semibold hover:bg-gray-200 transition-all">Batal</button>
             <button id="confirmDeleteBtn" class="flex-1 py-2.5 bg-red-500 text-white rounded-xl font-semibold hover:bg-red-600 transition-all shadow-md">Hapus</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openLogoutModal() {
+        document.getElementById('logoutModal').style.display = 'flex';
+    }
+    function closeLogoutModal() {
+        document.getElementById('logoutModal').style.display = 'none';
+    }
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('logoutModal')) {
+            closeLogoutModal();
+        }
+    }
+</script>
+
+<div id="logoutModal" style="display: none;" class="fixed inset-0 z-[100] items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="bg-[#EDEDED] rounded-[20px] p-10 shadow-2xl max-w-sm w-full mx-4 text-center font-sans">
+        <h3 class="text-[22px] font-bold text-[#151515] mb-8 leading-tight">Apakah anda yakin ingin keluar?</h3>
+        
+        <div class="flex justify-center gap-4">
+            <button onclick="closeLogoutModal()" class="bg-[#1D1D1D] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition-all w-28">
+                Batal
+            </button>
+
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="bg-[#1D1D1D] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition-all w-28">
+                    Keluar
+                </button>
+            </form>
         </div>
     </div>
 </div>

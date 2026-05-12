@@ -137,9 +137,20 @@
         </div>
 
         <div class="flex flex-col items-center justify-center mb-12 space-y-4">
-            <input accept="image/*" class="hidden" id="profile-upload" type="file"/>
-            <div class="profile-circle" id="profile-trigger" onclick="document.getElementById('profile-upload').click()"></div>
-            <button class="text-gray-600 font-bold text-lg hover:text-black transition-colors" onclick="document.getElementById('profile-upload').click()">
+            <input accept="image/*" class="hidden" id="profile-upload" type="file" onchange="previewProfile(this)"/>
+            
+            <div class="profile-circle flex items-center justify-center text-white text-5xl font-bold cursor-pointer" 
+         id="profile-trigger" 
+         style="background-color: #00DBFF; {{ auth()->user()->profile_photo ? 'background-image: url('.asset('storage/'.auth()->user()->profile_photo).'); background-size: cover; background-position: center;' : '' }}"
+         onclick="document.getElementById('profile-upload').click()">
+         
+                <span id="initials" style="{{ Auth::user()->profile_photo ? 'display: none;' : '' }}">
+                    {{ strtoupper(substr(Auth::user()->username, 0, 1)) }}
+                </span>
+            </div>
+
+            <button class="text-gray-600 font-bold text-lg hover:text-black transition-colors" 
+                    onclick="document.getElementById('profile-upload').click()">
                 Ganti Foto Profil
             </button>
         </div>
