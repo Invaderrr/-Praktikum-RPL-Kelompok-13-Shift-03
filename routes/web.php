@@ -1,20 +1,67 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InventarisController;
+use Illuminate\Http\Request; // Tambahkan ini
+use Illuminate\Support\Facades\Auth; // Tambahkan ini
 
-/*Web Routes*/
+/* Web Routes */
 
-// Rute untuk Halaman Login (Tampilan Utama)
+// 1. Rute Publik
 Route::get('/', function () {
     return view('welcome');
+})->name('login');
+
+// TAMBAHKAN INI: Proses pengolahan data login
+Route::post('/', function (Request $request) {
+    $credentials = $request->only('username', 'password');
+
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        // Arahkan ke rute 'dashboard' (jembatan pemisah role)
+        return redirect()->intended('dashboard');
+    }
+
+    // Jika gagal, balik ke halaman login dengan pesan error
+    return back()->withErrors([
+        'email' => 'Email atau password salah.',
+    ]);
 });
 
-// Rute untuk Halaman Register (Sign Up)
 Route::get('/register', function () {
     return view('register');
 });
 
-// Rute untuk Halaman Dashboard Admin
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
+// 2. Rute Terproteksi (Harus Login)
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', function () {
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('user.katalog');
+    })->name('dashboard');
+
+    // --- AREA ADMIN ---
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/inventaris', [InventarisController::class, 'index'])->name('inventaris');
+        Route::get('/pengaturan', function () {
+            return view('admin.pengaturan'); 
+        })->name('pengaturan');
+    });
+
+    // --- AREA USER (PEMBELI) ---
+    Route::get('/katalog', function () {
+        return view('user.katalog'); 
+    })->name('user.katalog');
+
+    // OPSIONAL: Tambahkan rute logout agar bisa ganti akun
+    Route::post('/logout', function (Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    })->name('logout');
 });
