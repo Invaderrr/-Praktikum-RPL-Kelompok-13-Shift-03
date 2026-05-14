@@ -351,23 +351,27 @@
             <img src="{{ asset('img/STOCKING.png') }}" alt="Logo StocKING">
         </div>
     
-        <a href="#" class="menu-item active">
+        <a href="{{ route('admin.dashboard') }}" class="menu-item active">
             <img src="{{ asset('img/Home.png') }}" alt="Home"> Dashboard
         </a>
 
-        <a href="#" class="menu-item">
+        <a href="{{ route('admin.inventaris') }}" class="menu-item">
             <img src="{{ asset('img/Inventoris.png') }}" alt="Inventaris"> Inventaris
         </a>
 
         <div class="sidebar-bottom">
-            <a href="#" class="menu-item" style="color: #595959; background: transparent;">
+            <a href="{{ route('admin.pengaturan') }}" class="menu-item" style="color: #595959; background: transparent;">
                 <img src="{{ asset('img/Settings.png') }}" alt="Pengaturan"> Pengaturan
             </a>
-            <a href="#" class="menu-item" style="color: rgba(89,89,89,0.5); background: transparent;">
+            <a href="#" class="menu-item" style="color: rgba(89,89,89,0.5); background: transparent;" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <img src="{{ asset('img/Logout.png') }}" alt="Logout"> Log Out
             </a>
         </div>
     </div>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
 
     <div class="main-content">
         <div class="top-header">
@@ -409,7 +413,7 @@
                     <div class="card-bottom-layer"></div>
                     <div class="card-top-layer">
                         <h6>Total Transaksi</h6>
-                        <h3>0 Penjualan</h3>
+                        <h3>{{ $totalTransaksi }} Penjualan</h3>
                         <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
                     </div>
                 </div>
@@ -420,7 +424,7 @@
                     <div class="card-bottom-layer"></div>
                     <div class="card-top-layer">
                         <h6>Pemasukan</h6>
-                        <h3>Rp. 0</h3>
+                        <h3>Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</h3>
                         <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
                     </div>
                 </div>
@@ -431,7 +435,7 @@
                     <div class="card-bottom-layer"></div>
                     <div class="card-top-layer">
                         <h6>Total Bahan Baku</h6>
-                        <h3>17</h3>
+                        <h3>{{ $totalBahan }}</h3>
                         <img src="{{ asset('img/Package.png') }}" alt="Package">
                     </div>
                 </div>
@@ -442,7 +446,7 @@
                     <div class="card-bottom-layer"></div>
                     <div class="card-top-layer">
                         <h6>Peringatan Stok</h6>
-                        <h3>0</h3>
+                        <h3>{{ $stokMenipis }}</h3>
                         <img src="{{ asset('img/Warning.png') }}" alt="Warning">
                     </div>
                 </div>
@@ -452,31 +456,48 @@
             <div class="transaction-section">
                 <div class="transaction-title">Transaksi Terbaru</div>
                 
-                @php
-                    // Ini dummy variable, nanti ganti dengan lemparan data dari Controller
-                    $transaksiTerbaru = []; 
-                @endphp
-
                 @if(count($transaksiTerbaru) > 0)
-                    <table class="table table-borderless">
-                        <thead style="border: 1px solid #D97706; border-radius: 10px;">
-                            <tr>
-                                <th>Tanggal/Waktu</th>
-                                <th>Nama Item</th>
-                                <th>Harga Satuan</th>
-                                <th>Jumlah</th>
-                                <th>Harga</th>
-                                <th>Total</th>
-                                <th>Jenis</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($transaksiTerbaru as $trx)
+                    <div style="max-height: 270px; overflow-y: auto; overflow-x: hidden; border-radius: 10px;">
+                        <table class="table table-borderless" style="margin-bottom:0;">
+                            <thead style="border: 1px solid #D97706; border-radius: 10px; background: #FFFFFF; position: sticky; top: 0; z-index: 1;">
                                 <tr>
+                                    <th>Tanggal/Waktu</th>
+                                    <th>Nama Item</th>
+                                    <th>Harga Satuan</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga</th>
+                                    <th>Total</th>
+                                    <th>Jenis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($transaksiTerbaru as $d)
+                                    <tr>
+                                        <td>
+                                            @php
+                                                $tgl = optional($d->transaksi)->tanggal_transaksi;
+                                                $tglFmt = $tgl ? \Carbon\Carbon::parse($tgl)->translatedFormat('d M Y') : '-';
+
+                                                $jamRaw = optional($d->transaksi)->jam_transaksi;
+                                                // jam_transaksi disimpan sebagai TIME/HH:mm:ss, tampilkan H:i
+                                                $jamFmt = $jamRaw ? \Carbon\Carbon::parse($jamRaw)->format('H:i') : '';
+                                            @endphp
+                                            {{ $tglFmt }}
+                                            <div style="font-size: 12px; color: rgba(0,0,0,0.35)">
+                                                {{ $jamFmt }}
+                                            </div>
+                                        </td>
+                                        <td>{{ $d->bahanBaku->nama_bahan ?? '-' }}</td>
+                                        <td>Rp {{ number_format($d->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                                        <td>{{ $d->jumlah ?? 0 }}</td>
+                                        <td>Rp {{ number_format(($d->harga_satuan ?? 0) * ($d->jumlah ?? 0), 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format(optional($d->transaksi)->total_harga ?? 0, 0, ',', '.') }}</td>
+                                        <td>{{ ucfirst(optional($d->transaksi)->metode_pembayaran ?? '-') }}</td>
                                     </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 @else
                     <div class="empty-state">
                         <img src="{{ asset('img/Frown.png') }}" alt="Frown">
