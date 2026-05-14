@@ -190,7 +190,7 @@
                 <label class="form-label">Password</label>
                 <div class="password-wrapper">
                     <input type="password" id="password" name="password" class="form-control" placeholder="Buat password anda">
-                    <img src="{{ asset('img/Icon-eye.png') }}" class="icon-eye toggle-pass" data-target="password">
+                    <img src="{{ asset('img/Mata Coret.png') }}" class="icon-eye toggle-pass" data-target="password">
                 </div>
             </div>
 
@@ -199,7 +199,7 @@
                 <label class="form-label">Konfirmasi Password</label>
                 <div class="password-wrapper">
                     <input type="password" id="confirm_password" name="password_confirmation" class="form-control" placeholder="Ulangi password">
-                    <img src="{{ asset('img/Icon-eye.png') }}" class="icon-eye toggle-pass" data-target="confirm_password">
+                    <img src="{{ asset('img/Mata Coret.png') }}" class="icon-eye toggle-pass" data-target="confirm_password">
                 </div>
             </div>
 

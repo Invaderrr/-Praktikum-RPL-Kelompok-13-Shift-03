@@ -72,7 +72,7 @@
            class="flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200 
            {{ request()->routeIs('admin.dashboard') ? 'text-black shadow-sm' : 'text-[#828282] hover:text-black hover:bg-gray-50' }}"
            style="{{ request()->routeIs('admin.dashboard') ? 'background: linear-gradient(93.69deg, rgba(219, 212, 0, 0.5) 0.99%, rgba(245, 158, 11, 0.5) 100%);' : '' }}">
-            <img alt="Home Icon" class="w-5 h-5 mr-3 {{ request()->routeIs('admin.dashboard') ? 'brightness-0' : 'opacity-60 grayscale' }}" src="{{ asset('img/Home.png') }}"/>
+            <img alt="Home Icon" class="w-5 h-5 mr-3 {{ request()->routeIs('admin.dashboard') ? 'brightness-0' : 'opacity-60 grayscale' }}" src="{{ asset('img/Dashboard_Off.png') }}"/>
             <span class="text-sm">Dashboard</span>
         </a>
 
@@ -80,7 +80,7 @@
            class="flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200 
            {{ request()->routeIs('admin.inventaris') ? 'text-black shadow-sm' : 'text-[#828282] hover:text-black hover:bg-gray-50' }}"
            style="{{ request()->routeIs('admin.inventaris') ? 'background: linear-gradient(93.69deg, rgba(219, 212, 0, 0.5) 0.99%, rgba(245, 158, 11, 0.5) 100%);' : '' }}">
-            <img alt="Inventaris Icon" class="w-5 h-5 mr-3 {{ request()->routeIs('admin.inventaris') ? 'brightness-0' : 'opacity-60 grayscale' }}" src="{{ asset('img/Inventoris.png') }}"/> 
+            <img alt="Inventaris Icon" class="w-5 h-5 mr-3 {{ request()->routeIs('admin.inventaris') ? 'brightness-0' : 'opacity-60 grayscale' }}" src="{{ asset('img/Inventaris_Off.png') }}"/> 
             <span class="text-sm">Inventaris</span>
         </a>
     </nav>
@@ -89,12 +89,12 @@
         <a href="{{ route('admin.pengaturan') }}" 
            class="flex items-center px-4 py-2 rounded-lg font-semibold text-black shadow-sm"
            style="background: linear-gradient(93.69deg, rgba(219, 212, 0, 0.5) 0.99%, rgba(245, 158, 11, 0.5) 100%);">
-            <img alt="Settings Icon" class="w-5 h-5 mr-3 brightness-0" src="{{ asset('img/Settings.png') }}"/>
+            <img alt="Settings Icon" class="w-5 h-5 mr-3 brightness-0" src="{{ asset('img/Pengaturan_Off.png') }}"/>
             <span class="text-sm font-medium">Pengaturan</span>
         </a>
         
         <button type="button" onclick="openLogoutModal()" class="w-full flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors font-semibold text-left">
-        <img alt="Logout Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Logout.png') }}"/>
+        <img alt="Logout Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Log out_Off.png') }}"/>
         <span class="text-sm">Log Out</span>
     </button>
     </div>
@@ -106,13 +106,13 @@
             <div class="relative">
                 <input class="w-full pl-4 pr-10 py-1.5 border border-stocking-border rounded-lg text-sm outline-none focus:border-stocking-yellow" placeholder="Search" type="text"/>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Search.png') }}"/>
+                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Pencarian.png') }}"/>
                 </div>
             </div>
         </div>
         <div class="flex items-center space-x-6">
             <button class="relative">
-                <img alt="Notification Icon" class="w-6 h-6" src="{{ asset('img/Notifikasi.png') }}"/>
+                <img alt="Notification Icon" class="w-6 h-6" src="{{ asset('img/Lonceng.png') }}"/>
             </button>
             <div class="w-10 h-10 rounded-full bg-[#00DBFF] flex items-center justify-center text-white font-bold border border-white shadow-sm">
             @if(Auth::check())

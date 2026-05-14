@@ -334,13 +334,15 @@
     </div>
     
     <div class="header-right">
-        <div class="search-bar">
-            <input type="text" class="search-input" placeholder="Search">
-            <img src="{{ asset('img/Search.png') }}" class="search-icon">
-        </div>
+        <div class="search-wrapper">
+        <input type="text" name="search" placeholder="Cari bahan atau kategori..." value="{{ request('search') }}">
+        <button type="submit" style="background: none; border: none;">
+            <img src="{{ asset('img/Search.png') }}" alt="Search" width="20">
+        </button>
+    </div>
         
         <div class="header-icons">
-            <img src="{{ asset('img/Notifikasi.png') }}" alt="Notif" class="notif-icon">
+            <img src="{{ asset('img/Lonceng.png') }}" alt="Notif" class="notif-icon">
             <div class="profile-avatar">A</div>
         </div>
     </div>
@@ -352,19 +354,19 @@
         </div>
     
         <a href="{{ route('admin.dashboard') }}" class="menu-item active">
-            <img src="{{ asset('img/Home.png') }}" alt="Home"> Dashboard
+            <img src="{{ asset('img/Dashboard_On.png') }}" alt="Home"> Dashboard
         </a>
 
         <a href="{{ route('admin.inventaris') }}" class="menu-item">
-            <img src="{{ asset('img/Inventoris.png') }}" alt="Inventaris"> Inventaris
+            <img src="{{ asset('img/Inventaris_On.png') }}" alt="Inventaris"> Inventaris
         </a>
 
         <div class="sidebar-bottom">
             <a href="{{ route('admin.pengaturan') }}" class="menu-item" style="color: #595959; background: transparent;">
-                <img src="{{ asset('img/Settings.png') }}" alt="Pengaturan"> Pengaturan
+                <img src="{{ asset('img/Pengaturan_On.png') }}" alt="Pengaturan"> Pengaturan
             </a>
             <a href="#" class="menu-item" style="color: rgba(89,89,89,0.5); background: transparent;" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <img src="{{ asset('img/Logout.png') }}" alt="Logout"> Log Out
+                <img src="{{ asset('img/Log out_On.png') }}" alt="Logout"> Log Out
             </a>
         </div>
     </div>
@@ -377,11 +379,11 @@
         <div class="top-header">
             <div class="search-bar">
                 <input type="text" placeholder="Search">
-                <img src="{{ asset('img/Search.png') }}" alt="Search">
+                <img src="{{ asset('img/Pencarian.png') }}" alt="Search">
             </div>
             
             <div class="header-icons">
-                <img src="{{ asset('img/Notifikasi.png') }}" alt="Notifikasi" class="notif-icon">
+                <img src="{{ asset('img/Lonceng.png') }}" alt="Notifikasi" class="notif-icon">
                 
                 @php
                     $username = auth()->user()->username ?? 'Admin';
@@ -436,7 +438,7 @@
                     <div class="card-top-layer">
                         <h6>Total Bahan Baku</h6>
                         <h3>{{ $totalBahan }}</h3>
-                        <img src="{{ asset('img/Package.png') }}" alt="Package">
+                        <img src="{{ asset('img/Total Bahan Baku.png') }}" alt="Package">
                     </div>
                 </div>
             </div>
@@ -447,7 +449,7 @@
                     <div class="card-top-layer">
                         <h6>Peringatan Stok</h6>
                         <h3>{{ $stokMenipis }}</h3>
-                        <img src="{{ asset('img/Warning.png') }}" alt="Warning">
+                        <img src="{{ asset('img/Peringatan.png') }}" alt="Warning">
                     </div>
                 </div>
             </div>
@@ -500,7 +502,7 @@
                     </div>
                 @else
                     <div class="empty-state">
-                        <img src="{{ asset('img/Frown.png') }}" alt="Frown">
+                        <img src="{{ asset('img/Wajah Sedih.png') }}" alt="Frown">
                         <p>Maaf, tidak ada transaksi terbaru</p>
                     </div>
                 @endif

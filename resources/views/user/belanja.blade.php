@@ -58,11 +58,11 @@
     <nav class="flex-1 px-4 mt-4 space-y-2">
         <a href="{{ route('user.belanja') }}" class="flex items-center px-4 py-2 rounded-lg font-semibold text-black shadow-sm" 
             style="background: linear-gradient(93.69deg, rgba(219, 212, 0, 0.5) 0.99%, rgba(245, 158, 11, 0.5) 100%);">
-            <img alt="Belanja Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Belanja.png') }}"/> <span class="text-sm">Belanja</span>
+            <img alt="Belanja Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Belanja_On.png') }}"/> <span class="text-sm">Belanja</span>
         </a>
         
         <a href="{{ route('user.transaksi') }}" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-all">
-            <img alt="Transaksi Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Dollar.png') }}"/> 
+            <img alt="Transaksi Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Transaksi_Off.png') }}"/> 
             <span class="text-sm font-medium">Transaksi</span>
         </a>
     </nav>
@@ -71,7 +71,7 @@
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit" class="flex items-center w-full px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors">
-                <img alt="Logout Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Logout.png') }}"/>
+                <img alt="Logout Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Logout_Off.png') }}"/>
                 <span class="text-sm font-medium">Log Out</span>
             </button>
         </form>
@@ -84,7 +84,7 @@
             <div class="relative">
                 <input class="w-full pl-4 pr-10 py-1.5 border border-[#E0E0E0] rounded-lg text-sm outline-none" placeholder="Search" type="text"/>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Search.png') }}"/>
+                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Pencarian.png') }}"/>
                 </div>
             </div>
         </div>

@@ -22,7 +22,7 @@
 
             <img alt="Home Icon"
                  class="w-5 h-5 mr-3"
-                 src="{{ asset('img/Home.png') }}"/>
+                 src="{{ asset('img/Dashboard_Off.png') }}"/>
 
             <span class="text-sm">Dashboard</span>
         </a>
@@ -35,7 +35,7 @@
 
             <img alt="Inventaris Icon"
                  class="w-5 h-5 mr-3"
-                 src="{{ asset('img/Inventoris.png') }}"/>
+                 src="{{ asset('img/Inventaris_Off.png') }}"/>
 
             <span class="text-sm">Inventaris</span>
         </a>
@@ -60,7 +60,7 @@
 
             <img alt="Belanja Icon"
                  class="w-5 h-5 mr-3"
-                 src="{{ asset('img/Home.png') }}"/>
+                 src="{{ asset('img/Dashboard_Off.png') }}"/>
 
             <span class="text-sm">Belanja</span>
         </a>
@@ -73,7 +73,7 @@
 
             <img alt="Transaksi Icon"
                  class="w-5 h-5 mr-3"
-                 src="{{ asset('img/Inventoris.png') }}"/>
+                 src="{{ asset('img/Inventaris_Off.png') }}"/>
 
             <span class="text-sm">Transaksi</span>
         </a>
@@ -86,7 +86,7 @@
 
             <img alt="Pengaturan Icon"
                  class="w-5 h-5 mr-3"
-                 src="{{ asset('img/Settings.png') }}"/>
+                 src="{{ asset('img/Pengaturan_Off.png') }}"/>
 
             <span class="text-sm">Pengaturan</span>
         </a>
@@ -108,7 +108,7 @@
 
                 <img alt="Logout Icon"
                      class="w-5 h-5 mr-3"
-                     src="{{ asset('img/Logout.png') }}"/>
+                     src="{{ asset('img/Log out_Off.png') }}"/>
 
                 <span class="text-sm font-medium">
                     Log Out

@@ -182,7 +182,7 @@
                     required>
 
                 <img
-                    src="{{ asset('img/Icon-eye.png') }}"
+                    src="{{ asset('img/Mata Coret.png') }}"
                     id="togglePassword"
                     alt="Show"
                     class="icon-eye">

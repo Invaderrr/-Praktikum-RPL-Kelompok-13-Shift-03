@@ -102,11 +102,11 @@
     
     <nav class="flex-1 px-4 mt-4 space-y-2">
         <a href="{{ route('user.belanja') }}" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors">
-            <img alt="Belanja Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Belanja.png') }}"/> 
+            <img alt="Belanja Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Belanja_Off.png') }}"/> 
             <span class="text-sm font-medium">Belanja</span>
         </a>
         <a href="{{ route('user.transaksi') }}" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors">
-            <img alt="Transaksi Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Dollar.png') }}"/>
+            <img alt="Transaksi Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Transaksi_Off.png') }}"/>
             <span class="text-sm font-medium">Transaksi</span>
         </a>
     </nav>
@@ -114,12 +114,12 @@
     <div class="p-4 space-y-2 border-t border-gray-50">
         <a href="{{ route('user.pengaturan') }}" class="flex items-center px-4 py-2 rounded-lg font-semibold text-black shadow-sm"
         style="background: linear-gradient(93.69deg, rgba(219, 212, 0, 0.5) 0.99%, rgba(245, 158, 11, 0.5) 100%);">
-            <img alt="Settings Icon" class="w-5 h-5 mr-3 brightness-0" src="{{ asset('img/Settings.png') }}"/>
+            <img alt="Settings Icon" class="w-5 h-5 mr-3 brightness-0" src="{{ asset('img/Pengaturan_Off.png') }}"/>
             <span class="text-sm font-medium">Pengaturan</span>
         </a>
         
         <button onclick="openLogoutModal()" class="w-full flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors font-semibold">
-            <img alt="Logout Icon" class="w-5 h-5 mr-3 opacity-60 grayscale" src="{{ asset('img/Logout.png') }}"/>
+            <img alt="Logout Icon" class="w-5 h-5 mr-3 opacity-60 grayscale" src="{{ asset('img/Log out_Off.png') }}"/>
             <span class="text-sm">Log Out</span>
         </button>
     </div>
@@ -131,12 +131,12 @@
             <div class="relative">
                 <input class="w-full pl-4 pr-10 py-1.5 border border-stocking-border rounded-lg text-sm outline-none" placeholder="Search" type="text"/>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Search.png') }}"/>
+                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Pencarian.png') }}"/>
                 </div>
             </div>
         </div>
         <div class="flex items-center space-x-6">
-            <img alt="Notification Icon" class="w-6 h-6" src="{{ asset('img/Notifikasi.png') }}"/>
+            <img alt="Notification Icon" class="w-6 h-6" src="{{ asset('img/Lonceng.png') }}"/>
             <div class="w-10 h-10 rounded-full bg-[#00DBFF] flex items-center justify-center text-white font-bold border border-white shadow-sm overflow-hidden">
                 @if(auth()->user()->profile_photo)
                     <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}" class="w-full h-full object-cover">
