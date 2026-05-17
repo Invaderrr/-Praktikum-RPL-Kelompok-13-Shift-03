@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <style>
         body { 
-            background-color: #FFFFFF; 
+            background-color: #FDFCF8; 
             font-family: 'Montserrat', sans-serif; 
         }
 
@@ -45,9 +45,9 @@
         }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden">
+<body class="flex h-screen overflow-hidden" style="background-color: #FDFCF8;">
 
-    <aside class="w-64 border-r border-gray-200 flex flex-col bg-[#FFFFFF] h-full">
+    <aside class="w-64 border-r border-gray-200 flex flex-col h-full" style="background-color: #FDFCF8;">
         <div class="p-6">
             <img alt="STOCKING Logo" class="h-8" src="{{ asset('img/STOCKING.png') }}"/> 
         </div>
@@ -67,8 +67,8 @@
         </nav>
 
         <div class="p-4 space-y-2">
-            <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="#">
-                <img alt="Settings Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Pengaturan_Off.png') }}"/>
+            <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="{{ route('user.pengaturan') }}">
+                <img alt="Settings Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Pengaturan_On.png') }}"/>
                 <span class="text-sm font-medium">Pengaturan</span>
             </a>
             <form action="{{ route('logout') }}" method="POST">
@@ -82,24 +82,24 @@
     </aside>
 
     <div class="flex-1 flex flex-col overflow-hidden">
-        <header class="h-16 border-b border-gray-200 bg-white flex items-center justify-between px-8">
-            <div class="flex-1 max-w-md">
-                <div class="relative">
-                    <input class="w-full pl-4 pr-10 py-1.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-yellow-500" placeholder="Search" type="text"/>
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                        <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Pencarian.png') }}"/>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center space-x-6">
-                <img alt="Notification Icon" class="w-6 h-6" src="{{ asset('img/Lonceng.png') }}"/>
-                <div class="w-10 h-10 rounded-full bg-[#00DBFF] flex items-center justify-center text-white font-bold border border-white shadow-sm">
-                    {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 1)) }}
-                </div>
+        <header class="h-16 border-b border-gray-200 flex items-center justify-end px-8" style="background-color: #FDFCF8;">
+            @php
+                // Ambil foto dari session atau database auth milik user
+                $fotoUser = session('foto') ?? (Auth::check() ? Auth::user()->foto : 'default.png');
+                $username = auth()->user()->username ?? 'User';
+                $initial = strtoupper(substr($username, 0, 1));
+            @endphp
+
+            <div class="flex items-center justify-center text-white border border-white shadow-sm overflow-hidden" 
+                 style="width: 40px; height: 40px; background-color: #F2C94C; border-radius: 50%; font-weight: 700; font-size: 18px; background-image: url('{{ ($fotoUser && $fotoUser !== 'default.png') ? asset('avatars/' . $fotoUser) : '' }}'); background-size: cover; background-position: center;">
+                
+                @if(!$fotoUser || $fotoUser === 'default.png')
+                    <span>{{ $initial }}</span>
+                @endif
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto px-10 pb-10 pt-8 bg-white">
+        <main class="flex-1 overflow-y-auto px-10 pb-10 pt-8" style="background-color: #FDFCF8;">
             <div class="mb-8">
                 <h2 class="text-[33px] font-bold text-[#151515]">Riwayat Transaksi</h2>
                 <p class="text-[#595959] text-sm font-medium">Lihat Semua Transaksi Anda</p>
@@ -162,10 +162,10 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-2 text-sm">
-                                @if($index == 0)
-                                    {{ ucfirst($t->metode_pembayaran) }}
-                                @endif
-                            </td>
+                                    @if($index == 0)
+                                        {{ ucfirst($t->metode_pembayaran) }}
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         @empty

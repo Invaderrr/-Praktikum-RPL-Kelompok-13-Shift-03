@@ -23,7 +23,7 @@
         }
     </script>
     <style>
-        body { background-color: #FFFFFF; font-family: 'Montserrat', sans-serif; }
+        body { background-color: #FDFCF8; font-family: 'Montserrat', sans-serif; }
         [x-cloak] { display: none !important; }
         select {
             -webkit-appearance: none !important;
@@ -63,9 +63,9 @@
         }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden bg-white" x-data="{ openModal: false, openEditModal: false, editId: null, editData: {}, openCategoryModal: false }">
+<body class="flex h-screen overflow-hidden" style="background-color: #FDFCF8;" x-data="{ openModal: false, openEditModal: false, editId: null, editData: {}, openCategoryModal: false }">
 
-<aside class="w-64 border-r border-stocking-border flex flex-col bg-white">
+<aside class="w-64 border-r border-stocking-border flex flex-col" style="background-color: #FDFCF8;">
     <div class="p-6">
         <h1 class="text-2xl font-bold italic tracking-tighter">
             <img alt="STOCKING Logo" class="h-8" src="{{ asset('img/STOCKING.png') }}"/>
@@ -101,30 +101,23 @@
 </aside>
 
 <div class="flex-1 flex flex-col overflow-hidden">
-    <header class="h-16 border-b border-stocking-border bg-white flex items-center justify-between px-8">
-        <div class="flex-1 max-w-md">
-            <div class="relative">
-                <input class="w-full pl-4 pr-10 py-1.5 border border-stocking-border rounded-lg text-sm outline-none" placeholder="Search" type="text"/>
-                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Pencarian.png') }}"/>
-                </div>
-            </div>
-        </div>
-        <div class="flex items-center space-x-6">
-            <button class="relative">
-                <img alt="Notification Icon" class="w-6 h-6" src="{{ asset('img/Lonceng.png') }}"/>
-            </button>
-            <div class="w-10 h-10 rounded-full bg-[#00DBFF] flex items-center justify-center text-white font-bold border border-white shadow-sm">
-                @if(Auth::check())
-                    {{ strtoupper(substr(Auth::user()->username, 0, 1)) }}
-                @else
-                    A
-                @endif
-            </div>
+    <header class="h-16 border-b border-stocking-border flex items-center justify-end px-8" style="background-color: #FDFCF8;">
+        @php
+            $fotoAdmin = session('foto') ?? (Auth::check() ? Auth::user()->foto : 'default.png');
+        @endphp
+        
+        <div class="w-10 h-10 rounded-full bg-[#00DBFF] flex items-center justify-center text-white font-bold border border-white shadow-sm overflow-hidden" 
+             style="background-image: url('{{ ($fotoAdmin && $fotoAdmin !== 'default.png') ? asset('avatars/' . $fotoAdmin) : '' }}'); background-size: cover; background-position: center;">
+            
+            @if(!$fotoAdmin || $fotoAdmin === 'default.png')
+                <span class="text-white text-lg font-bold">
+                    {{ strtoupper(substr(session('username') ?? (Auth::check() ? Auth::user()->username : 'A'), 0, 1)) }}
+                </span>
+            @endif
         </div>
     </header>
 
-    <main class="flex-1 overflow-y-auto px-10 pb-10 pt-2 bg-white">
+    <main class="flex-1 overflow-y-auto px-10 pb-10 pt-2" style="background-color: #FDFCF8;">
         <div class="flex justify-between items-start mb-6">
             <div>
                 <h2 style="color: #151515; font-size: 33.05px;" class="font-bold">Inventaris</h2>
@@ -139,7 +132,6 @@
             </div>
         </div>
 
-        <!-- Filter Kategori -->
         <div class="mb-6" x-data="{ open: false, selected: 'Semua Kategori' }">
             <div class="relative inline-block w-64">
                 <button @click="open = !open" @click.away="open = false" type="button" style="color: #151515; font-size: 18px; background-color: #ECEDED;" class="flex items-center justify-between w-full border border-[#0000004D] px-4 py-2 rounded-md font-semibold outline-none cursor-pointer">
@@ -181,7 +173,6 @@
                         </tr>
                     </thead>
                     <tbody style="color: #1D1D1D; font-size: 16px;" class="font-medium">
-                        {{-- DISESUAIKAN DENGAN image_476d38.png --}}
                         @forelse($inventaris as $item)
                         <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors" data-kategori="{{ $item->kategori }}">
                             <td class="py-4 px-6">
@@ -207,7 +198,6 @@
     </main>
 </div>
 
-<!-- Modal Edit Produk -->
 <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-40" style="display: none;">
     <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl p-8 relative mx-4">
         <button type="button" class="absolute top-4 right-6 text-gray-400 hover:text-black text-3xl">&times;</button>
@@ -253,7 +243,6 @@
     </div>
 </div>
 
-<!-- Modal Tambah Produk -->
 <div x-show="openModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40" x-transition x-cloak>
     <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl p-8 relative mx-4" @click.away="openModal = false">
         <button @click="openModal = false" class="absolute top-4 right-6 text-gray-400 hover:text-black text-3xl">&times;</button>
@@ -330,23 +319,21 @@
         if (checkedCheckbox) {
             const row = checkedCheckbox.closest('tr');
             const cells = row.querySelectorAll('td');
-            const hargaText = cells[4].textContent.trim().replace('Rp. ', '').replace(/\./g, '');
             
-            // Update form values
+            // Perbaikan indeks pemetaan kolom JavaScript
+            const hargaText = cells[5].textContent.trim().replace('Rp. ', '').replace(/\./g, '');
+            
             document.getElementById('edit_nama_bahan').value = cells[1].textContent.trim();
             document.getElementById('edit_stok').value = cells[2].textContent.trim();
-            document.getElementById('edit_satuan').value = cells[3].textContent.trim();
+            document.getElementById('edit_kategori').value = row.getAttribute('data-kategori') || row.dataset.kategori || '';
+            document.getElementById('edit_satuan').value = cells[4].textContent.trim();
             document.getElementById('edit_harga').value = hargaText;
 
-            // Kategori (ambil dari dataset)
-            const kategoriText = row.getAttribute('data-kategori') || row.dataset.kategori || '';
-            document.getElementById('edit_kategori').value = kategoriText;
-            
             // Update form action
             const editForm = document.getElementById('editForm');
             editForm.action = `/admin/inventaris/${checkedCheckbox.value}`;
             
-            // Show modal (hapus class hidden biar bisa dipencet)
+            // Show modal
             const editModal = document.getElementById('editModal');
             editModal.classList.remove('hidden');
             editModal.style.display = 'flex';

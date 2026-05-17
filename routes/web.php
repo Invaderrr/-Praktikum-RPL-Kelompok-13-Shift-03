@@ -7,6 +7,7 @@ use App\Http\Controllers\BelanjaController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventarisController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,9 +50,7 @@ Route::prefix('user')->group(function () {
 
     // Endpoint untuk tombol-tombol di halaman user.pengaturan.blade.php
     // (dummy redirect dulu supaya tombol bisa diklik tanpa error)
-    Route::put('/pengaturan/update-photo', function () {
-        return redirect()->route('user.pengaturan')->with('success', 'Foto profil diperbarui!');
-    })->name('user.pengaturan.update_photo');
+    Route::put('/pengaturan/update-photo', [ProfileController::class, 'updatePhoto'])->name('user.pengaturan.update_photo');
 
     Route::put('/pengaturan/update-username', function () {
         return redirect()->route('user.pengaturan')->with('success', 'Username diperbarui!');

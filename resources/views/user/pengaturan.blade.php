@@ -27,14 +27,14 @@
 
     <style>
         body { 
-            background-color: #FFFFFF;
-            font-family: 'Montserrat', sans-serif;
+          background-color: #FFFFFF;
+          font-family: 'Montserrat', sans-serif;
         }
         
         .profile-circle {
             width: 150px;
             height: 150px;
-            background-color: #00DBFF;
+            background-color: #F2C94C;
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -102,7 +102,7 @@
     
     <nav class="flex-1 px-4 mt-4 space-y-2">
         <a href="{{ route('user.belanja') }}" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors">
-            <img alt="Belanja Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Belanja_Off.png') }}"/> 
+            <img alt="Belanja Icon" class="w-5 h-5 mr-3 opacity-60" src="{{ asset('img/Dashboard_Off.png') }}"/> 
             <span class="text-sm font-medium">Belanja</span>
         </a>
         <a href="{{ route('user.transaksi') }}" class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors">
@@ -126,24 +126,19 @@
 </aside>
 
 <div class="flex-1 flex flex-col overflow-hidden">
-    <header class="h-16 border-b border-stocking-border bg-white flex items-center justify-between px-8">
-        <div class="flex-1 max-w-md">
-            <div class="relative">
-                <input class="w-full pl-4 pr-10 py-1.5 border border-stocking-border rounded-lg text-sm outline-none" placeholder="Search" type="text"/>
-                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Pencarian.png') }}"/>
-                </div>
-            </div>
-        </div>
-        <div class="flex items-center space-x-6">
-            <img alt="Notification Icon" class="w-6 h-6" src="{{ asset('img/Lonceng.png') }}"/>
-            <div class="w-10 h-10 rounded-full bg-[#00DBFF] flex items-center justify-center text-white font-bold border border-white shadow-sm overflow-hidden">
-                @if(auth()->user()->profile_photo)
-                    <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}" class="w-full h-full object-cover">
-                @else
-                    {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 1)) }}
-                @endif
-            </div>
+    <header class="h-16 border-b border-stocking-border bg-white flex items-center justify-end px-8">
+        @php
+            $fotoUser = session('foto') ?? (auth()->user()->foto ?? 'default.png');
+            $username = session('username') ?? (auth()->user()->username ?? 'User');
+            $initial = strtoupper(substr($username, 0, 1));
+        @endphp
+
+        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold border border-white shadow-sm overflow-hidden" 
+             style="background-color: #F2C94C; background-image: url('{{ ($fotoUser && $fotoUser !== 'default.png') ? asset('avatars/' . $fotoUser) : '' }}'); background-size: cover; background-position: center;">
+            
+            @if(!$fotoUser || $fotoUser === 'default.png')
+                <span class="text-white text-lg font-bold">{{ $initial }}</span>
+            @endif
         </div>
     </header>
 
@@ -157,13 +152,16 @@
             <form action="{{ route('user.pengaturan.update_photo') }}" method="POST" enctype="multipart/form-data" class="flex flex-col items-center justify-center w-full mb-12 space-y-4">
                 @csrf
                 @method('PUT')
-                <input accept="image/*" class="hidden" id="profile-upload" name="profile_photo" type="file" onchange="previewProfile(this)"/>
+                <input accept="image/*" class="hidden" id="profile-upload" name="foto" type="file" onchange="previewProfile(this)"/>
+                
                 <div class="profile-circle" id="profile-trigger" onclick="document.getElementById('profile-upload').click()" 
-                     style="background-image: url('{{ auth()->user()->profile_photo ? asset('storage/'.auth()->user()->profile_photo) : '' }}'); background-size: cover; background-position: center;">
-                    @if(!auth()->user()->profile_photo)
-                        <span id="initials" class="text-white text-5xl font-bold">{{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 1)) }}</span>
+                     style="background-image: url('{{ ($fotoUser && $fotoUser !== 'default.png') ? asset('avatars/'.$fotoUser) : '' }}'); background-size: cover; background-position: center;">
+                    
+                    @if(!$fotoUser || $fotoUser === 'default.png')
+                        <span id="initials" class="text-white text-5xl font-bold">{{ $initial }}</span>
                     @endif
                 </div>
+                
                 <div class="flex flex-col items-center">
                     <button type="button" class="text-gray-600 font-bold text-lg hover:text-black transition-colors" onclick="document.getElementById('profile-upload').click()">
                         Ganti Foto Profil
@@ -175,7 +173,7 @@
             <div class="flex flex-col w-full max-w-[600px] space-y-3">
                 <div>
                     <label class="block text-lg font-bold text-[#151515] mb-2 ml-1">Username</label>
-                    <input class="field-input opacity-70" readonly type="text" value="{{ auth()->user()->username }}"/>
+                    <input class="field-input opacity-70" readonly type="text" value="{{ $username }}"/>
                     <button type="button" onclick="openModal('usernameModal')" class="btn-update-gradient">Ganti Username</button>
                 </div>
 
@@ -185,11 +183,14 @@
                     <button type="button" onclick="openModal('passwordModal')" class="btn-update-gradient">Ganti Password</button>
                 </div>
 
-                <div class="opacity-80">
-                    <label class="block text-lg font-bold text-[#151515] mb-2 ml-1">Email</label>
-                    <input class="field-input bg-[#F3F4F6] text-gray-500 cursor-not-allowed" readonly type="email" value="{{ auth()->user()->email }}"/>
-                    <p class="text-[#828282] text-xs mt-2 ml-1 italic">*Email akun tidak dapat diubah</p>
-                </div>
+               <div class="opacity-80">
+    <label class="block text-lg font-bold text-[#151515] mb-2 ml-1">Email</label>
+    <input class="field-input bg-[#F3F4F6] text-gray-500 cursor-not-allowed" 
+           readonly 
+           type="email" 
+           value="{{ auth()->user()->email ?? session('email') ?? '-' }}"/>
+    <p class="text-[#828282] text-xs mt-2 ml-1 italic">*Email akun tidak dapat diubah</p>
+</div>
             </div>
         </div>
     </main>
@@ -289,11 +290,9 @@
 </div>
 
 <script>
-    // Fungsi umum untuk modal Username dan Password
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // TAMBAHAN: Fungsi khusus untuk Modal Logout
     function openLogoutModal() { 
         document.getElementById('logoutModal').style.display = 'flex'; 
     }
@@ -301,7 +300,6 @@
         document.getElementById('logoutModal').style.display = 'none'; 
     }
 
-    // TAMBAHAN: Menutup modal (apapun) jika user klik di luar area kotak modal
     window.onclick = function(event) {
         const logoutModal = document.getElementById('logoutModal');
         const userModal = document.getElementById('usernameModal');

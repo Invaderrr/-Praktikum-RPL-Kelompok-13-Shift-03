@@ -24,13 +24,18 @@ class CheckoutController extends Controller
             ]);
 
             // 1. Simpan data utama transaksi
+            $userId = session('user_id');
+            if (!$userId) {
+                throw new \Exception('User tidak terautentikasi pada session.');
+            }
+
             $transaksi = Transaksi::create([
                 // Kolom fillable di Model Transaksi: tanggal_transaksi, total_harga, metode_pembayaran, id_user
-                'id_user' => auth()->id(),
+                'id_user' => $userId,
                 'total_harga' => $request->total_semua,
                 'metode_pembayaran' => $request->metode,
-'tanggal_transaksi' => now()->toDateString(),
-                'jam_transaksi' => now()->format('H:i:s'),
+                'tanggal_transaksi' => date('Y-m-d'),
+                'jam_transaksi' => date('H:i:s'),
             ]);
 
 

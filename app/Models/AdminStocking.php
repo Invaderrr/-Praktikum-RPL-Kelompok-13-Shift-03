@@ -14,6 +14,8 @@ class AdminStocking extends Model
 
     protected $fillable = [
         'username',
-        'password'
+        'password',
+        'foto',
+
     ];
 }

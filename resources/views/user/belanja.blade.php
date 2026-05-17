@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <style>
-        body { background-color: #FFFFFF; font-family: 'Montserrat', sans-serif; }
+        body { background-color: #FDFCF8; font-family: 'Montserrat', sans-serif; }
         
         .layer-bottom {
             background: #FEF3C7;
@@ -49,9 +49,9 @@
         }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden bg-white">
+<body class="flex h-screen overflow-hidden" style="background-color: #FDFCF8;">
 
-<aside class="w-64 border-r border-[#E0E0E0] flex flex-col bg-white">
+<aside class="w-64 border-r border-[#E0E0E0] flex flex-col" style="background-color: #FDFCF8;">
     <div class="p-6">
         <img alt="STOCKING Logo" class="h-8" src="{{ asset('img/STOCKING.png') }}"/> 
     </div>
@@ -68,6 +68,10 @@
     </nav>
 
     <div class="p-4 space-y-2">
+        <a class="flex items-center px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors" href="{{ route('user.pengaturan') }}">
+            <img alt="Settings Icon" class="w-5 h-5 mr-3" src="{{ asset('img/Pengaturan_On.png') }}"/>
+            <span class="text-sm font-medium">Pengaturan</span>
+        </a>
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit" class="flex items-center w-full px-4 py-2 text-[#828282] hover:bg-gray-50 rounded-lg transition-colors">
@@ -79,21 +83,28 @@
 </aside>
 
 <div class="flex-1 flex flex-col overflow-hidden">
-    <header class="h-16 border-b border-[#E0E0E0] bg-white flex items-center justify-between px-8">
-        <div class="flex-1 max-w-md">
-            <div class="relative">
-                <input class="w-full pl-4 pr-10 py-1.5 border border-[#E0E0E0] rounded-lg text-sm outline-none" placeholder="Search" type="text"/>
-                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <img alt="Search Icon" class="w-4 h-4" src="{{ asset('img/Pencarian.png') }}"/>
-                </div>
+    <header class="h-16 border-b border-[#E0E0E0] flex items-center justify-end px-8" style="background-color: #FDFCF8;">
+        <div class="flex items-center gap-4">
+            
+            
+            @php
+                // Ambil foto dari session atau database auth milik user
+                $fotoUser = session('foto') ?? (Auth::check() ? Auth::user()->foto : 'default.png');
+                $username = auth()->user()->username ?? 'User';
+                $initial = strtoupper(substr($username, 0, 1));
+            @endphp
+
+            <div class="w-10 h-10 rounded-full d-flex align-items-center justify-content-center text-white font-bold border border-white shadow-sm overflow-hidden" 
+                 style="width: 40px; height: 40px; background-color: #F2C94C; border-radius: 50%; font-weight: 700; font-size: 18px; background-image: url('{{ ($fotoUser && $fotoUser !== 'default.png') ? asset('avatars/' . $fotoUser) : '' }}'); background-size: cover; background-position: center;">
+                
+                @if(!$fotoUser || $fotoUser === 'default.png')
+                    <span>{{ $initial }}</span>
+                @endif
             </div>
-        </div>
-        <div class="flex items-center space-x-6">
-            <div class="w-10 h-10 rounded-full bg-[#00DBFF] flex items-center justify-center text-white font-bold border border-white shadow-sm"> S </div>
         </div>
     </header>
 
-    <main class="flex-1 overflow-y-auto px-6 pb-10 pt-6">
+    <main class="flex-1 overflow-y-auto px-6 pb-10 pt-6" style="background-color: #FDFCF8;">
         <div class="flex flex-row gap-6 w-full">
             <div class="flex-1">
                 <h2 class="text-3xl font-bold text-[#151515]">Belanja</h2>
@@ -113,7 +124,6 @@
                                 <p class="text-orange-500 font-bold text-sm mt-1">Rp {{ number_format($p->harga, 0, ',', '.') }}</p>
                                 <p class="text-[10px] text-gray-500">Stok: {{ $p->stok }} {{ $p->satuan }}</p>
                             </div>
-                            {{-- Fungsi addToCart menerima data harga dan stok asli dari database --}}
                         
                             <button type="button"
                             onclick="addToCart('{{ $p->getKey() }}', '{{ addslashes($p->nama_item ?? $p->nama_bahan) }}', '{{ $p->harga }}', '{{ $p->stok }}')" 
@@ -198,31 +208,27 @@
     let itemToDelete = null;
 
     function addToCart(id, name, price, stock) {
-    // Pastikan ID dikonversi ke string agar konsisten sebagai key Object
-    const prodId = id.toString();
-    
-    // Pastikan harga dan stok diubah kembali menjadi angka (Integer)
-    const prodPrice = parseInt(price) || 0;
-    const prodStock = parseInt(stock) || 0;
+        const prodId = id.toString();
+        const prodPrice = parseInt(price) || 0;
+        const prodStock = parseInt(stock) || 0;
 
-    if (!cart[prodId]) {
-        cart[prodId] = { 
-            name: name, 
-            price: prodPrice, 
-            qty: 1, 
-            stock: prodStock 
-        };
-    } else {
-        if (cart[prodId].qty < prodStock) {
-            cart[prodId].qty++;
+        if (!cart[prodId]) {
+            cart[prodId] = { 
+                name: name, 
+                price: prodPrice, 
+                qty: 1, 
+                stock: prodStock 
+            };
         } else {
-            alert('Stok tidak mencukupi!');
-            return;
+            if (cart[prodId].qty < prodStock) {
+                cart[prodId].qty++;
+            } else {
+                alert('Stok tidak mencukupi!');
+                return;
+            }
         }
+        renderCart();
     }
-    renderCart();
-}
-    
 
     function updateQty(id, change) {
         if (cart[id]) {
@@ -249,6 +255,7 @@
     }
 
     function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.remove('remove');
         document.getElementById('deleteModal').classList.remove('show');
         itemToDelete = null;
     }
@@ -301,7 +308,6 @@
 
     async function sendDataToServer(metode, alamat) {
         try {
-            // Mengambil angka murni dari string tampilan total
             const totalValue = document.getElementById('total-price-display').innerText.replace(/[^0-9]/g, '');
 
             const response = await fetch("{{ route('user.checkout.proses') }}", {

@@ -25,7 +25,6 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
-
             'password' => 'required|string|min:1|confirmed',
         ]);
 
@@ -60,7 +59,8 @@ class AuthController extends Controller
             session([
                 'admin_id' => $admin->id_admin,
                 'username' => $admin->username,
-                'role' => 'admin'
+                'role' => 'admin',
+                'foto' => $admin->foto
             ]);
 
             return redirect('/admin/dashboard');
@@ -76,7 +76,9 @@ class AuthController extends Controller
             session([
                 'user_id' => $user->id_user,
                 'username' => $user->username,
-                'role' => 'user'
+                'role' => 'user',
+                'foto' => $user->foto
+
             ]);
 
             return redirect()->route('user.belanja');

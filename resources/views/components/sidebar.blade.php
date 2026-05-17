@@ -80,16 +80,16 @@
 
         {{-- PENGATURAN --}}
         <a href="{{ route('user.pengaturan') }}"
-           class="flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200
-           {{ request()->routeIs('user.pengaturan') ? 'text-black shadow-sm' : 'text-[#828282] hover:text-black hover:bg-gray-50' }}"
-           style="{{ request()->routeIs('user.pengaturan') ? 'background: linear-gradient(93.69deg, rgba(219,212,0,0.5) 0.99%, rgba(245,158,11,0.5) 100%);' : '' }}">
-
-            <img alt="Pengaturan Icon"
-                 class="w-5 h-5 mr-3"
-                 src="{{ asset('img/Pengaturan_Off.png') }}"/>
-
-            <span class="text-sm">Pengaturan</span>
-        </a>
+   class="flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200
+   {{ request()->routeIs('user.pengaturan') ? 'text-black shadow-sm' : 'text-[#828282] hover:text-black hover:bg-gray-50' }}"
+   style="{{ request()->routeIs('user.pengaturan') ? 'background: linear-gradient(93.69deg, rgba(219,212,0,0.5) 0.99%, rgba(245,158,11,0.5) 100%);' : '' }}">
+    
+    <img alt="Settings Icon" 
+         class="w-5 h-5 mr-3 {{ request()->routeIs('user.pengaturan') ? 'brightness-0' : 'opacity-60' }}" 
+         src="{{ asset('img/Pengaturan_Off.png') }}"/>
+         
+    <span class="text-sm font-medium">Pengaturan</span>
+</a>
 
     </nav>
 

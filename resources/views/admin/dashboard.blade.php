@@ -17,18 +17,15 @@
 
         /* Sidebar Styling */
         .sidebar {
-            width: 289px; /* Sesuai spek Figma kamu */
-            height: 100vh; /* Full tinggi layar */
+            width: 289px;
+            height: 100vh;
             background-color: #FDFCF8;
-    
-            /* Border kanan dengan warna #0000004D (30% opacity) */
             border-right: 1px solid rgba(0, 0, 0, 0.3); 
-    
             display: flex;
             flex-direction: column;
             padding: 20px;
             z-index: 1000;
-            position: fixed; /* Biar tetap di kiri pas di-scroll */
+            position: fixed;
             top: 0;
             left: 0;
         }
@@ -41,7 +38,7 @@
 
         .brand-logo img {
             width: 180px;
-            height: auto;        /* Biar gak gepeng */
+            height: auto;
             object-fit: contain;
         }
 
@@ -58,24 +55,6 @@
             transition: 0.3s;
         }
 
-        .sidebar-bottom .menu-item {
-            margin-bottom: 2px;
-        }
-
-        /* 1. Kondisi Menu Biasa (Tidak Diklik) */
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            margin: 0 20px 10px 20px;
-            border-radius: 10.64px;
-            color: #595959; /* Teks Abu-abu */
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
         .menu-item img {
             width: 18.75px;
             margin-right: 15px;
@@ -83,7 +62,7 @@
             transition: 0.3s;
         }
 
-        /* 2. Kondisi Menu Active (Pas Diklik) */
+        /* Kondisi Menu Active */
         .menu-item.active {
             background: linear-gradient(93.69deg, rgba(219, 212, 0, 0.5) 0.99%, rgba(245, 158, 11, 0.5) 100%);
             color: #151515; 
@@ -99,10 +78,14 @@
             margin-bottom: 20px;
         }
 
-        /* Main Content Styling */
+        .sidebar-bottom .menu-item {
+            margin-bottom: 2px;
+        }
+
+        /* Main Content & Layout Fix */
         .main-content {
             margin-left: 289px; 
-            padding: 77px 40px 40px 40px; 
+            padding-top: 98.38px; /* Biar konten gak ketutup header fixed */
             background-color: #FDFCF8; 
             min-height: 100vh;
         }
@@ -118,50 +101,9 @@
             position: fixed;
             top: 0;
             left: 289px; 
-            z-index: 999; /* Di bawah sidebar dikit biar gak nabrak border */
-            justify-content: space-between;
+            z-index: 999;
+            justify-content: flex-end; /* Memaksa konten ikon & profil ke kanan */
             padding: 0 40px;
-        }
-
-        .header-right {
-            flex: 1;
-            display: flex;
-            justify-content: space-between; 
-            align-items: center;
-            padding-left: 0; 
-        }
-
-        .search-bar {
-            width: 400px;
-            height: 51px;
-            border: 1.42px solid #999999;
-            border-radius: 16.36px;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            background-color: #FFFFFF;
-        }
-
-        .search-bar input {
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 100%;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 18px;
-            line-height: 28.47px;
-            color: #999999;
-        }
-
-        .search-bar input::placeholder {
-            color: #999999;
-        }
-
-        .search-bar img {
-            width: 24.5px;
-            height: 23.57px;
-            margin-right: 10px;
         }
 
         .header-icons {
@@ -175,25 +117,12 @@
             height: 28.36px;
         }
 
-        .profile-avatar {
-            width: 47.5px;
-            height: 47.5px;
-            background-color: #00EAFF;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 20px;
-        }
-
         /* Dashboard Body */
         .dashboard-body {
             padding: 40px;
         }
 
         .dashboard-title {
-            font-family: 'Montserrat', sans-serif;
             font-weight: 700;
             font-size: 32px;
             margin-bottom: 5px;
@@ -201,7 +130,6 @@
         }
 
         .dashboard-subtitle {
-            font-family: 'Montserrat', sans-serif;
             font-weight: 400;
             font-size: 18px;
             color: #595959;
@@ -214,43 +142,32 @@
             font-weight: 700;
             color: #D97706;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 35px;
         }
 
-        /* Summary Cards */
-        /* 1. Wrapper buat ngatur posisi 4 kotak biar berjejer */
-        .summary-cards-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            padding: 30px;
-            margin-left: 289px; /* Sesuai lebar sidebar StocKING */
-            margin-top: 100px;  /* Biar gak ketutup header */
-        }
-
-/* 2. Wadah utama per satu kotak kartu */
+        /* Summary Cards Layout Fix */
         .summary-card-container {
-            width: 244px;
+            width: 100%;
+            max-width: 244px;
             height: 135px;
             position: relative;
+            margin: 0 auto;
         }
 
-/* 3. Kotak Bawah (Layer Krem) */
         .card-bottom-layer {
             position: absolute;
-            width: 244px;
+            width: 100%;
             height: 101px;
-            top: 34px; /* Efek ngintip dari bawah */
+            top: 34px;
             left: 0;
             background-color: #FEF3C7;
             border-radius: 10px;
             z-index: 1;
         }
 
-/* 4. Kotak Atas (Layer Gradasi Oren-Kuning) */
         .card-top-layer {
             position: absolute;
-            width: 244px;
+            width: 100%;
             height: 120px;
             top: 0;
             left: 0;
@@ -264,9 +181,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-/* 5. Styling Text Montserrat & Ikon */
         .card-top-layer h6 {
-            font-family: 'Montserrat', sans-serif;
             font-size: 18px;
             font-weight: 700;
             color: #FFFFFF;
@@ -274,11 +189,13 @@
         }
 
         .card-top-layer h3 {
-            font-family: 'Montserrat', sans-serif;
             font-size: 24px;
             font-weight: 700;
             color: #FFFFFF;
             margin: 5px 0 0 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .card-top-layer img {
@@ -294,7 +211,7 @@
             border: 1px solid rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             height: 400px;
-            margin-top: 40px;
+            margin-top: 50px;
             padding: 30px;
             background-color: #FFFFFF;
         }
@@ -328,25 +245,6 @@
     </style>
 </head>
 <body>
-    <header class="top-header">
-    <div class="header-left">
-        <img src="{{ asset('img/STOCKING.png') }}" alt="StocKING" class="logo-header">
-    </div>
-    
-    <div class="header-right">
-        <div class="search-wrapper">
-        <input type="text" name="search" placeholder="Cari bahan atau kategori..." value="{{ request('search') }}">
-        <button type="submit" style="background: none; border: none;">
-            <img src="{{ asset('img/Search.png') }}" alt="Search" width="20">
-        </button>
-    </div>
-        
-        <div class="header-icons">
-            <img src="{{ asset('img/Lonceng.png') }}" alt="Notif" class="notif-icon">
-            <div class="profile-avatar">A</div>
-        </div>
-    </div>
-</header>
 
     <div class="sidebar">
         <div class="brand-logo">
@@ -376,25 +274,27 @@
     </form>
 
     <div class="main-content">
-        <div class="top-header">
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-                <img src="{{ asset('img/Pencarian.png') }}" alt="Search">
-            </div>
-            
+        
+        <header class="top-header">
             <div class="header-icons">
-                <img src="{{ asset('img/Lonceng.png') }}" alt="Notifikasi" class="notif-icon">
+                
                 
                 @php
+                    // Ambil foto dari session atau database auth
+                    $fotoAdmin = session('foto') ?? (Auth::check() ? Auth::user()->foto : 'default.png');
                     $username = auth()->user()->username ?? 'Admin';
-                    $role = auth()->user()->role ?? 'admin';
                     $initial = strtoupper(substr($username, 0, 1));
-                    // Jika butuh paksa "A" untuk semua admin, gunakan:
-                    // $initial = ($role == 'admin') ? 'A' : strtoupper(substr($username, 0, 1));
                 @endphp
-                <div class="profile-avatar">{{ $initial }}</div>
+
+                <div class="w-10 h-10 rounded-full d-flex align-items-center justify-content-center text-white font-bold border border-white shadow-sm overflow-hidden" 
+                     style="width: 47.5px; height: 47.5px; background-color: #00EAFF; border-radius: 50%; font-weight: 700; font-size: 20px; background-image: url('{{ ($fotoAdmin && $fotoAdmin !== 'default.png') ? asset('avatars/' . $fotoAdmin) : '' }}'); background-size: cover; background-position: center;">
+                    
+                    @if(!$fotoAdmin || $fotoAdmin === 'default.png')
+                        <span>{{ $initial }}</span>
+                    @endif
+                </div>
             </div>
-        </div>
+        </header>
 
         <div class="dashboard-body">
             <div class="dashboard-title">Dashboard</div>
@@ -410,50 +310,50 @@
             </div>
 
             <div class="row g-4">
-            <div class="col-md-3">
-                <div class="summary-card-container">
-                    <div class="card-bottom-layer"></div>
-                    <div class="card-top-layer">
-                        <h6>Total Transaksi</h6>
-                        <h3>{{ $totalTransaksi }} Penjualan</h3>
-                        <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="summary-card-container">
+                        <div class="card-bottom-layer"></div>
+                        <div class="card-top-layer">
+                            <h6>Total Transaksi</h6>
+                            <h3>{{ $totalTransaksi }} Penjualan</h3>
+                            <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-3">
-                <div class="summary-card-container">
-                    <div class="card-bottom-layer"></div>
-                    <div class="card-top-layer">
-                        <h6>Pemasukan</h6>
-                        <h3>Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</h3>
-                        <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="summary-card-container">
+                        <div class="card-bottom-layer"></div>
+                        <div class="card-top-layer">
+                            <h6>Pemasukan</h6>
+                            <h3>Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</h3>
+                            <img src="{{ asset('img/Grafik.png') }}" alt="Grafik">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-3">
-                <div class="summary-card-container">
-                    <div class="card-bottom-layer"></div>
-                    <div class="card-top-layer">
-                        <h6>Total Bahan Baku</h6>
-                        <h3>{{ $totalBahan }}</h3>
-                        <img src="{{ asset('img/Total Bahan Baku.png') }}" alt="Package">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="summary-card-container">
+                        <div class="card-bottom-layer"></div>
+                        <div class="card-top-layer">
+                            <h6>Total Bahan Baku</h6>
+                            <h3>{{ $totalBahan }}</h3>
+                            <img src="{{ asset('img/Total Bahan Baku.png') }}" alt="Package">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-3">
-                <div class="summary-card-container">
-                    <div class="card-bottom-layer"></div>
-                    <div class="card-top-layer">
-                        <h6>Peringatan Stok</h6>
-                        <h3>{{ $stokMenipis }}</h3>
-                        <img src="{{ asset('img/Peringatan.png') }}" alt="Warning">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="summary-card-container">
+                        <div class="card-bottom-layer"></div>
+                        <div class="card-top-layer">
+                            <h6>Peringatan Stok</h6>
+                            <h3>{{ $stokMenipis }}</h3>
+                            <img src="{{ asset('img/Peringatan.png') }}" alt="Warning">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
             <div class="transaction-section">
                 <div class="transaction-title">Transaksi Terbaru</div>
@@ -479,9 +379,7 @@
                                             @php
                                                 $tgl = optional($d->transaksi)->tanggal_transaksi;
                                                 $tglFmt = $tgl ? \Carbon\Carbon::parse($tgl)->translatedFormat('d M Y') : '-';
-
                                                 $jamRaw = optional($d->transaksi)->jam_transaksi;
-                                                // jam_transaksi disimpan sebagai TIME/HH:mm:ss, tampilkan H:i
                                                 $jamFmt = $jamRaw ? \Carbon\Carbon::parse($jamRaw)->format('H:i') : '';
                                             @endphp
                                             {{ $tglFmt }}

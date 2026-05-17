@@ -9,13 +9,20 @@ use App\Models\AdminStocking;
 
 class InventarisController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Mengambil semua data bahan baku dan diurutkan berdasarkan ID terbaru
         $inventaris = BahanBaku::orderBy('id_bahan_baku', 'desc')->get();
+          $search = $request->input('search');
+
+    // Query untuk mengambil data bahan
+    $data_bahan = BahanBaku::when($search, function ($query, $search) {
+        return $query->where('nama_bahan', 'like', "%{$search}%")
+                     ->orWhere('kategori', 'like', "%{$search}%");
+    })->get();
         
         // Kirim data ke view admin
-        return view('admin.inventaris', compact('inventaris'));
+        return view('admin.inventaris', compact('inventaris', 'data_bahan'));
     }
 
     public function store(Request $request)

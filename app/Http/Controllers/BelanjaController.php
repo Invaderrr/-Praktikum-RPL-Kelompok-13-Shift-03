@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class BelanjaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Proteksi: Gunakan auth() check jika menggunakan sistem login Laravel standar
         // atau tetap gunakan session jika kamu mengaturnya manual
@@ -19,7 +19,19 @@ class BelanjaController extends Controller
         // PERBAIKAN: Ubah nama variabel menjadi $produk agar sesuai dengan @foreach di Blade
         $produk = BahanBaku::where('stok', '>', 0)->get();
 
-        return view('user.belanja', compact('produk'));
+        {
+    $search = $request->input('search');
+
+    // Query untuk mengambil data bahan
+    $data_bahan = BahanBaku::when($search, function ($query, $search) {
+        return $query->where('nama_bahan', 'like', "%{$search}%")
+                     ->orWhere('kategori', 'like', "%{$search}%");
+    })->get();
+
+    
+}
+
+        return view('user.belanja', compact('produk', 'data_bahan'));
     }
 
     public function checkout(Request $request)
@@ -27,6 +39,11 @@ class BelanjaController extends Controller
         $cart = $request->items;
         $alamat = $request->alamat;
         $metode = $request->metode;
+
+        $userId = session('user_id');
+        if (!$userId) {
+            return response()->json(['error' => 'User tidak terautentikasi pada session. Silakan login kembali.'], 401);
+        }
 
         if (!$cart || count($cart) == 0) {
             return response()->json(['error' => 'Keranjang kosong!'], 400);
